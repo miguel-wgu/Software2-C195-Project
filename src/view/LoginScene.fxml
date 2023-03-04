@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="347.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+    <children>
+        <TextField fx:id="userNameTextField" layoutX="170.0" layoutY="101.0" promptText="Username" />
+        <PasswordField fx:id="loginPasswordField" layoutX="170.0" layoutY="148.0" promptText="Password" />
+        <Button fx:id="loginBtn" layoutX="170.0" layoutY="192.0" mnemonicParsing="false" onAction="#loginBtnClick" prefHeight="25.0" prefWidth="66.0" text="Login" />
+        <Button fx:id="clearLoginBtn" layoutX="253.0" layoutY="192.0" mnemonicParsing="false" onAction="#clearLoginBtnClick" prefHeight="25.0" prefWidth="66.0" text="Clear" />
+        <Label fx:id="schedulerLoginField" layoutX="86.0" layoutY="44.0" text="Appointment Scheduler Login">
+            <font>
+                <Font name="Nirmala UI" size="24.0" />
+            </font></Label>
+        <Label layoutX="178.0" layoutY="241.0" text="Current Location">
+            <font>
+                <Font name="Nirmala UI" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="198.0" layoutY="279.0" prefHeight="27.0" prefWidth="92.0" text="Placeholder" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
