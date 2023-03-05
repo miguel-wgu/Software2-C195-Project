@@ -1,4 +1,4 @@
-package utils;
+package DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,15 +23,12 @@ public abstract class JDBC {
 	/**
 	 * Open connection.
 	 */
-	public static void openConnection()
-	{
+	public static void openConnection() {
 		try {
 			Class.forName(driver); // Locate Driver
 			connection = DriverManager.getConnection(jdbcUrl, userName, password); // Reference Connection object
 			System.out.println("Connection successful!");
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Error:" + e.getMessage());
 		}
 	}
@@ -43,9 +40,7 @@ public abstract class JDBC {
 		try {
 			connection.close();
 			System.out.println("Connection closed!");
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Error:" + e.getMessage());
 		}
 	}

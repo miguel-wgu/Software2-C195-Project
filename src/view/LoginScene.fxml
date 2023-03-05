@@ -19,7 +19,7 @@
                 <Font name="Nirmala UI" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="198.0" layoutY="279.0" prefHeight="27.0" prefWidth="92.0" text="Placeholder" textAlignment="CENTER">
+        <Label fx:id="timezoneLabel" layoutX="49.0" layoutY="279.0" prefHeight="27.0" prefWidth="337.0" text="Placeholder" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>

@@ -31,10 +31,14 @@ public class LoginController implements Initializable {
 	private Button clearLoginBtn;
 	@FXML
 	private Label schedulerLoginLabel;
+	@FXML private Label timezoneLabel;
 
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		// Display timezone country and state in login screen
+		timezoneLabel.setText(Locale.getDefault().getDisplayName() + " " + Locale.getDefault().getCountry() );
+
 		Locale locale = Locale.getDefault();
 //		resourceBundle = ResourceBundle.getBundle("/lang/FR_Login", locale);
 //		schedulerLoginLabel.setText(resourceBundle.getString("Login"));
@@ -52,7 +56,7 @@ public class LoginController implements Initializable {
 		 * Get username and password from text fields
 		 */
 		String userName = userNameTextField.getText();
-		String passWord = loginPasswordField.getText();
+		String password = loginPasswordField.getText();
 
 		/**
 		 * After login is successful, load the main scene
