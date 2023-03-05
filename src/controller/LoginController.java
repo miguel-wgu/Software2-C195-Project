@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utils.errors;
+import utils.ErrMsg;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,7 +73,8 @@ public class LoginController implements Initializable {
 
 		// check for empty string, if false start MainScene
 		try {
-			if (!errors.checkEmpty(userName, password)) {
+			if (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password)) {
+
 				/**
 				 * Validate user ID
 				 */
@@ -90,31 +91,6 @@ public class LoginController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 			}
-
-
-
-
-
-
-
-//			if (!errors.checkEmpty(userName, password)) {
-//
-//				/**
-//				 * Validate user ID
-//				 */
-//				int validUserID = UserValidation.validateUserID(userName, password);
-//				System.out.println("validUserID = " + validUserID);
-//
-//				/**
-//				 * After login is successful, load the main scene
-//				 */
-//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
-//				Stage stage = (Stage) loginBtn.getScene().getWindow();
-//				Scene scene = new Scene(loader.load());
-//				stage.setTitle("Appointment Scheduler");
-//				stage.setScene(scene);
-//				stage.show();
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
