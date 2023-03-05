@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.UserValidation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.errors;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -31,18 +35,27 @@ public class LoginController implements Initializable {
 	private Button clearLoginBtn;
 	@FXML
 	private Label schedulerLoginLabel;
-	@FXML private Label timezoneLabel;
+	@FXML
+	private Label timezoneLabel;
+	@FXML
+	private Label currentLocationLabel;
 
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// Display timezone country and state in login screen
-		timezoneLabel.setText(Locale.getDefault().getDisplayName() + " " + Locale.getDefault().getCountry() );
+//		timezoneLabel.setText(Locale.getDefault().getDisplayName() + " " + Locale.getDefault().getCountry() );
 
-		Locale locale = Locale.getDefault();
-//		resourceBundle = ResourceBundle.getBundle("/lang/FR_Login", locale);
-//		schedulerLoginLabel.setText(resourceBundle.getString("Login"));
+		ZoneId zoneId = ZoneId.systemDefault();
+		timezoneLabel.setText(zoneId.toString());
 
+		resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.getDefault());
+		schedulerLoginLabel.setText(resourceBundle.getString("loginTitle"));
+		userNameTextField.setPromptText(resourceBundle.getString("usernameText"));
+		loginPasswordField.setPromptText(resourceBundle.getString("passwordText"));
+		loginBtn.setText(resourceBundle.getString("loginButton"));
+		clearLoginBtn.setText(resourceBundle.getString("clearButton"));
+		currentLocationLabel.setText(resourceBundle.getString("currentLocation"));
 	}
 
 	/**
@@ -51,22 +64,61 @@ public class LoginController implements Initializable {
 	 * @param actionEvent the action event
 	 * @throws IOException the io exception
 	 */
-	public void loginBtnClick(ActionEvent actionEvent) throws IOException {
+	public void loginBtnClick(ActionEvent actionEvent) throws IOException, SQLException {
 		/**
 		 * Get username and password from text fields
 		 */
 		String userName = userNameTextField.getText();
 		String password = loginPasswordField.getText();
 
-		/**
-		 * After login is successful, load the main scene
-		 */
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
-		Stage stage = (Stage) loginBtn.getScene().getWindow();
-		Scene scene = new Scene(loader.load());
-		stage.setTitle("Appointment Scheduler");
-		stage.setScene(scene);
-		stage.show();
+		// check for empty string, if false start MainScene
+		try {
+			if (!errors.checkEmpty(userName, password)) {
+				/**
+				 * Validate user ID
+				 */
+				int validUserID = UserValidation.validateUserID(userName, password);
+				System.out.println("validUserID = " + validUserID);
+
+				/**
+				 * After login is successful, load the main scene
+				 */
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
+				Stage stage = (Stage) loginBtn.getScene().getWindow();
+				Scene scene = new Scene(loader.load());
+				stage.setTitle("Appointment Scheduler");
+				stage.setScene(scene);
+				stage.show();
+			}
+
+
+
+
+
+
+
+//			if (!errors.checkEmpty(userName, password)) {
+//
+//				/**
+//				 * Validate user ID
+//				 */
+//				int validUserID = UserValidation.validateUserID(userName, password);
+//				System.out.println("validUserID = " + validUserID);
+//
+//				/**
+//				 * After login is successful, load the main scene
+//				 */
+//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
+//				Stage stage = (Stage) loginBtn.getScene().getWindow();
+//				Scene scene = new Scene(loader.load());
+//				stage.setTitle("Appointment Scheduler");
+//				stage.setScene(scene);
+//				stage.show();
+//			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

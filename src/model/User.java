@@ -1,7 +1,9 @@
 package model;
 
 /**
- * The type User.
+ * The User class
+ *
+ * @author Miguel Guzman
  */
 public class User {
 	private int userID;
