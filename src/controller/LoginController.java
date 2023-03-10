@@ -49,7 +49,7 @@ public class LoginController implements Initializable {
 		ZoneId zoneId = ZoneId.systemDefault();
 		timezoneLabel.setText(zoneId.toString());
 
-		resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.getDefault());
+		resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.FRANCE);
 		schedulerLoginLabel.setText(resourceBundle.getString("loginTitle"));
 		userNameTextField.setPromptText(resourceBundle.getString("usernameText"));
 		loginPasswordField.setPromptText(resourceBundle.getString("passwordText"));
@@ -105,6 +105,5 @@ public class LoginController implements Initializable {
 	public void clearLoginBtnClick(ActionEvent actionEvent) {
 		userNameTextField.setText("");
 		loginPasswordField.setText("");
-
 	}
 }
