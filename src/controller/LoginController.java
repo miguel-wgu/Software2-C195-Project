@@ -43,9 +43,6 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		// Display timezone country and state in login screen
-//		timezoneLabel.setText(Locale.getDefault().getDisplayName() + " " + Locale.getDefault().getCountry() );
-
 		ZoneId zoneId = ZoneId.systemDefault();
 		timezoneLabel.setText(zoneId.toString());
 

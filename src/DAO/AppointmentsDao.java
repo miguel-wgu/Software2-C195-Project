@@ -13,7 +13,7 @@ public interface AppointmentsDao extends DAO<Appointments> {
 
 	public Appointments get(int appointmentID) throws SQLException;
 
-	public void insert(Appointments appointment);
+	public void insert(Appointments appointment) throws SQLException;
 
 	public void update(Appointments appointment);
 

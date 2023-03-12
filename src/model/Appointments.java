@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 public class Appointments {
 	// Create an appointment class that creates an appointment object
+//	private int appointmentID;
+	// appointmentID is the primary key in the database and is auto incremented
 	private int appointmentID;
 	private String title;
 	private String description;
@@ -13,16 +15,12 @@ public class Appointments {
 	private String type;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
-//	private LocalDateTime createDate;
-//	private String createdBy;
-	//	private LocalDate lastUpdate;
-//	private String lastUpdateBy;
 	public int customerID;
 	public int userID;
 	public int contactID;
 
 	public Appointments(int appointmentID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime, int customerID, int userID, int contactID) {
-				this.appointmentID = appointmentID;
+		this.appointmentID = appointmentID;
 		this.title = title;
 		this.description = description;
 		this.location = location;
@@ -32,6 +30,20 @@ public class Appointments {
 		this.customerID = customerID;
 		this.userID = userID;
 		this.contactID = contactID;
+	}
+
+	// Set default values for the appointment object
+	public Appointments(String type) {
+		this.appointmentID = 0;
+		this.title = "";
+		this.description = "";
+		this.location = "";
+		this.type = type;
+		this.startTime = LocalDateTime.now();
+		this.endTime = LocalDateTime.now();
+		this.customerID = 0;
+		this.userID = 0;
+		this.contactID = 0;
 	}
 
 	/**

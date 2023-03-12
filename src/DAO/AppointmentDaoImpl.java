@@ -4,9 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointments;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 
 public class AppointmentDaoImpl implements AppointmentsDao {
@@ -64,8 +62,19 @@ public class AppointmentDaoImpl implements AppointmentsDao {
 
 
 	@Override
-	public void insert(Appointments appointment) {
-
+	public void insert(Appointments appointment) throws SQLException {
+		String sqlStatement = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
+		ps.setString(1, appointment.getTitle());
+		ps.setString(2, appointment.getDescription());
+		ps.setString(3, appointment.getLocation());
+		ps.setString(4, appointment.getType());
+		ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+		ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+		ps.setInt(7, 2);
+		ps.setInt(8, 1);
+		ps.setInt(9, 1);
+		ps.executeUpdate();
 	}
 
 

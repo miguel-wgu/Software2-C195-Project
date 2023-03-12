@@ -4,12 +4,17 @@ import DAO.AppointmentDaoImpl;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Appointments;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -75,6 +80,11 @@ public class MainController implements Initializable {
 	@FXML
 	private TableColumn<Appointments, Integer> userIDColumn;
 
+	/**
+	 * The Add appointment button.
+	 */
+	@FXML private Button addApptBtn;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		AppointmentDaoImpl appointmentsList = new AppointmentDaoImpl();
@@ -106,9 +116,13 @@ public class MainController implements Initializable {
 	 *
 	 * @param actionEvent the action event
 	 */
-	public void addApptBtnClick(ActionEvent actionEvent) {
+	public void addApptBtnClick(ActionEvent actionEvent) throws IOException {
 		// open add appointment window
-
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddApptScene.fxml"));
+		Stage stage = (Stage) addApptBtn.getScene().getWindow();
+		Scene scene = new Scene(loader.load());
+		stage.setTitle("Appointment Scheduler");
+		stage.setScene(scene);
 	}
 
 	/**

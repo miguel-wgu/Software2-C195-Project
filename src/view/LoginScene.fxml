@@ -10,7 +10,7 @@
         <PasswordField fx:id="loginPasswordField" layoutX="170.0" layoutY="148.0" promptText="Password" />
         <Button fx:id="loginBtn" layoutX="196.0" layoutY="187.0" mnemonicParsing="false" onAction="#loginBtnClick" prefHeight="25.0" prefWidth="98.0" text="Login" />
         <Button fx:id="clearLoginBtn" layoutX="195.0" layoutY="227.0" mnemonicParsing="false" onAction="#clearLoginBtnClick" prefHeight="25.0" prefWidth="98.0" text="Clear" />
-        <Label fx:id="schedulerLoginLabel" alignment="CENTER" layoutX="-1.0" layoutY="44.0" prefHeight="35.0" prefWidth="488.0" text="Appointment Scheduler Login">
+        <Label fx:id="schedulerLoginLabel" alignment="CENTER" layoutX="-1.0" layoutY="44.0" prefHeight="35.0" prefWidth="488.0" text="Appointment Scheduler Login" AnchorPane.topAnchor="35.0">
             <font>
                 <Font name="Nirmala UI" size="24.0" />
             </font></Label>
