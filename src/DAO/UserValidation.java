@@ -38,7 +38,7 @@ public abstract class UserValidation extends User {
 		ResultSet result = ps.getResultSet();
 		result.next();
 		if (result.getRow() == 1) {
-			System.out.println("Successfully logged in as " + userName);
+			System.out.println("Successfully logged in as " + userName + " this message is from UserValidation.java");
 			return result.getInt("User_ID");
 		}
 		return -1;

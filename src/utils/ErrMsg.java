@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class ErrMsg {
 	private static final Alert err = new Alert(Alert.AlertType.ERROR);
 	// variable to store ResourceBundle.getBundle("utils/Login", Locale.FRANCE).getString
-	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.FRANCE);
+	private static final ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.FRANCE);
 
 	/**
 	 * Checks if username or password is empty and shows an alert
@@ -25,18 +25,18 @@ public class ErrMsg {
 	 * @return the boolean
 	 */
 	public static boolean isEmptyField(String userName, String password) {
-		err.setTitle(resourceBundle.getString("error"));
-		err.setHeaderText(resourceBundle.getString("error"));
+		err.setTitle(rBundle.getString("error"));
+		err.setHeaderText(rBundle.getString("error"));
 		if (userName.isEmpty() && password.isEmpty()) {
-			err.setContentText(resourceBundle.getString("usernamePasswordError"));
+			err.setContentText(rBundle.getString("usernamePasswordError"));
 			err.showAndWait();
 			return true;
 		} else if (userName.isEmpty()) {
-			err.setContentText(resourceBundle.getString("usernameError"));
+			err.setContentText(rBundle.getString("usernameError"));
 			err.showAndWait();
 			return true;
 		} else if (password.isEmpty()) {
-			err.setContentText(resourceBundle.getString("passwordError"));
+			err.setContentText(rBundle.getString("passwordError"));
 			err.showAndWait();
 			return true;
 		}
@@ -52,10 +52,10 @@ public class ErrMsg {
 	 */
 	public static boolean isIncorrect(String userName, String password) throws SQLException {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(resourceBundle.getString("error"));
-		alert.setHeaderText(resourceBundle.getString("error"));
+		alert.setTitle(rBundle.getString("error"));
+		alert.setHeaderText(rBundle.getString("error"));
 		if (UserValidation.validateUserID(userName, password) == -1) {
-			alert.setContentText(resourceBundle.getString("usernamePasswordIncorrect"));
+			alert.setContentText(rBundle.getString("usernamePasswordIncorrect"));
 			alert.showAndWait();
 			return true;
 		}

@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.ErrMsg;
+import utils.HelperFunctions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,14 +46,13 @@ public class LoginController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		ZoneId zoneId = ZoneId.systemDefault();
 		timezoneLabel.setText(zoneId.toString());
-
-		resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.FRANCE);
-		schedulerLoginLabel.setText(resourceBundle.getString("loginTitle"));
-		userNameTextField.setPromptText(resourceBundle.getString("usernameText"));
-		loginPasswordField.setPromptText(resourceBundle.getString("passwordText"));
-		loginBtn.setText(resourceBundle.getString("loginButton"));
-		clearLoginBtn.setText(resourceBundle.getString("clearButton"));
-		currentLocationLabel.setText(resourceBundle.getString("currentLocation"));
+		ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.FRANCE);
+		schedulerLoginLabel.setText(rBundle.getString("loginTitle"));
+		userNameTextField.setPromptText(rBundle.getString("usernameText"));
+		loginPasswordField.setPromptText(rBundle.getString("passwordText"));
+		loginBtn.setText(rBundle.getString("loginButton"));
+		clearLoginBtn.setText(rBundle.getString("clearButton"));
+		currentLocationLabel.setText(rBundle.getString("currentLocation"));
 	}
 
 	/**
@@ -71,27 +71,14 @@ public class LoginController implements Initializable {
 		// check for empty string, if false start MainScene
 		try {
 			if (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password)) {
-
-				/**
-				 * Validate user ID
-				 */
-				int validUserID = UserValidation.validateUserID(userName, password);
-				System.out.println("validUserID = " + validUserID);
-
 				/**
 				 * After login is successful, load the main scene
 				 */
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
-				Stage stage = (Stage) loginBtn.getScene().getWindow();
-				Scene scene = new Scene(loader.load());
-				stage.setTitle("Appointment Scheduler");
-				stage.setScene(scene);
-				stage.show();
+				HelperFunctions.goToMain(actionEvent);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**

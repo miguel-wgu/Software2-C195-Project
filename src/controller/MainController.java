@@ -115,9 +115,9 @@ public class MainController implements Initializable {
 	 * Add appt btn click.
 	 *
 	 * @param actionEvent the action event
+	 * @throws IOException the io exception
 	 */
 	public void addApptBtnClick(ActionEvent actionEvent) throws IOException {
-		// open add appointment window
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddApptScene.fxml"));
 		Stage stage = (Stage) addApptBtn.getScene().getWindow();
 		Scene scene = new Scene(loader.load());
@@ -131,13 +131,19 @@ public class MainController implements Initializable {
 	 * @param actionEvent the action event
 	 */
 	public void updateApptBtn(ActionEvent actionEvent) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateApptScene.fxml"));
 	}
 
 	/**
 	 * Delete appt btn.
 	 *
 	 * @param actionEvent the action event
+	 * @throws SQLException the sql exception
 	 */
-	public void deleteApptBtn(ActionEvent actionEvent) {
+	public void deleteApptBtn(ActionEvent actionEvent) throws SQLException {
+		AppointmentDaoImpl appointmentDao = new AppointmentDaoImpl();
+		Appointments appointment = appointmentsTable.getSelectionModel().getSelectedItem();
+		appointmentDao.delete(appointment);
+		appointmentsTable.getItems().remove(appointment);
 	}
 }

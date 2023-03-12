@@ -18,9 +18,8 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		ResourceBundle resourceBundle = ResourceBundle.getBundle("utils/Login", Locale.FRANCE);
 		Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScene.fxml"));
-		primaryStage.setTitle(resourceBundle.getString("loginTitle"));
+		primaryStage.setTitle(ResourceBundle.getBundle("Language", Locale.getDefault()).getString("title"));
 		primaryStage.setScene(new Scene(root, 488.0, 375));
 		primaryStage.show();
 	}

@@ -3,13 +3,11 @@ package controller;
 import DAO.AppointmentDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import model.Appointments;
+import utils.HelperFunctions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,14 +35,6 @@ public class AddApptController implements Initializable {
 	}
 
 	public void cancelReturnMainClick(ActionEvent actionEvent) throws IOException {
-		// Cancel and return to MainScene
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScene.fxml"));
-		Stage stage = (Stage) addApptRtnMainBtn.getScene().getWindow();
-		Scene scene = new Scene(loader.load());
-		stage.setTitle("Appointment Scheduler");
-		stage.setScene(scene);
-		stage.show();
+		HelperFunctions.goToMain(actionEvent);
 	}
-
-
 }

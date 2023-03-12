@@ -17,5 +17,5 @@ public interface AppointmentsDao extends DAO<Appointments> {
 
 	public void update(Appointments appointment);
 
-	public void delete(Appointments appointment);
+	public void delete(Appointments appointment) throws SQLException;
 }
