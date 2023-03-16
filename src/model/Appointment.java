@@ -1,10 +1,8 @@
 package model;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Appointments {
+public class Appointment {
 	// Create an appointment class that creates an appointment object
 //	private int appointmentID;
 	// appointmentID is the primary key in the database and is auto incremented
@@ -19,7 +17,7 @@ public class Appointments {
 	public int userID;
 	public int contactID;
 
-	public Appointments(int appointmentID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime, int customerID, int userID, int contactID) {
+	public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime, int customerID, int userID, int contactID) {
 		this.appointmentID = appointmentID;
 		this.title = title;
 		this.description = description;
@@ -33,11 +31,11 @@ public class Appointments {
 	}
 
 	// Set default values for the appointment object
-	public Appointments(String type) {
+	public Appointment(String location, String type) {
 		this.appointmentID = 0;
 		this.title = "";
 		this.description = "";
-		this.location = "";
+		this.location = location;
 		this.type = type;
 		this.startTime = LocalDateTime.now();
 		this.endTime = LocalDateTime.now();

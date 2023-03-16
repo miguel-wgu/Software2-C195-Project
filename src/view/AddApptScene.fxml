@@ -31,7 +31,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <ComboBox layoutX="18.0" layoutY="270.0" prefWidth="150.0" promptText="Select a Contact" AnchorPane.topAnchor="270.0" />
+      <ComboBox fx:id="addContactNameCB" layoutX="18.0" layoutY="270.0" prefWidth="150.0" promptText="Select a Contact" AnchorPane.topAnchor="270.0" />
       <Label layoutX="289.0" layoutY="87.0" prefHeight="25.0" prefWidth="63.0" text="Start Date" AnchorPane.bottomAnchor="463.0" AnchorPane.topAnchor="82.0">
          <font>
             <Font size="14.0" />
@@ -72,7 +72,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <TextField layoutX="19.0" layoutY="495.0" AnchorPane.topAnchor="495.0" />
+      <TextField fx:id="addLocation" layoutX="19.0" layoutY="495.0" AnchorPane.topAnchor="495.0" />
       <TextArea layoutX="242.0" layoutY="269.0" prefHeight="108.0" prefWidth="318.0" AnchorPane.topAnchor="269.0" />
       <TextField fx:id="apptTypeTextField" layoutX="19.0" layoutY="345.0" AnchorPane.topAnchor="345.0" />
       <Button fx:id="addApptBtn" layoutX="242.0" layoutY="420.0" mnemonicParsing="false" onAction="#addApptBtnClick" text="Add" />

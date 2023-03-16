@@ -5,25 +5,39 @@
 
 <!--create a table view that displays all appointments in the database-->
 
-<AnchorPane prefHeight="824.0" prefWidth="1355.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
-   <children>
-      <TableView fx:id="appointmentsTable" layoutX="13.0" layoutY="76.0" prefHeight="304.0" prefWidth="1197.0">
-        <columns>
-            <TableColumn fx:id="appointmentIDColumn" prefWidth="75.0" text="Appointment ID" />
-            <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Description" />
-            <TableColumn fx:id="locationColumn" prefWidth="75.0" text="Location" />
-            <TableColumn fx:id="contactColumn" prefWidth="75.0" text="Contact" />
-            <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
-            <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Start Time" />
-            <TableColumn fx:id="endTimeColumn" prefWidth="75.0" text="End Time" />
-            <TableColumn fx:id="customerIDColumn" prefWidth="75.0" text="Customer ID" />
-            <TableColumn fx:id="userIDColumn" prefWidth="75.0" text="User ID" />
-        </columns>
-      </TableView>
-      <Button fx:id="addApptBtn" layoutX="1244.0" layoutY="134.0" mnemonicParsing="false" onAction="#addApptBtnClick" text="Add Appt." />
-      <Button fx:id="updateApptBtn" layoutX="1236.0" layoutY="203.0" mnemonicParsing="false" onAction="#updateApptBtn" text="Update Appt." />
-      <Button fx:id="deleteApptBtn" layoutX="1238.0" layoutY="268.0" mnemonicParsing="false" onAction="#deleteApptBtn" text="Delete Appt." />
-   </children>
+<AnchorPane prefHeight="824.0" prefWidth="1355.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+    <children>
+        <TableView fx:id="appointmentsTable" layoutX="13.0" layoutY="76.0" prefHeight="304.0" prefWidth="1197.0">
+            <columns>
+                <TableColumn fx:id="appointmentIDColumn" prefWidth="105.0" text="Appointment ID"/>
+                <TableColumn fx:id="titleColumn" minWidth="4.0" prefWidth="45.0" text="Title"/>
+                <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Description"/>
+                <TableColumn fx:id="locationColumn" prefWidth="75.0" text="Location"/>
+                <TableColumn fx:id="contactColumn" prefWidth="75.0" text="Contact"/>
+                <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type"/>
+                <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Start Time"/>
+                <TableColumn fx:id="endTimeColumn" prefWidth="75.0" text="End Time"/>
+                <TableColumn fx:id="customerIDColumn" prefWidth="75.0" text="Customer ID"/>
+                <TableColumn fx:id="userIDColumn" prefWidth="75.0" text="User ID"/>
+            </columns>
+        </TableView>
+        <Button fx:id="addApptBtn" layoutX="1244.0" layoutY="134.0" mnemonicParsing="false" onAction="#addApptBtnClick"
+                text="Add Appt."/>
+        <Button fx:id="updateApptBtn" layoutX="1236.0" layoutY="203.0" mnemonicParsing="false" onAction="#updateApptBtn"
+                text="Update Appt."/>
+        <Button fx:id="deleteApptBtn" layoutX="1238.0" layoutY="268.0" mnemonicParsing="false" onAction="#deleteApptBtn"
+                text="Delete Appt."/>
+        <TableView fx:id="customersTable" layoutX="14.0" layoutY="397.0" prefHeight="304.0" prefWidth="1197.0">
+            <columns>
+                <TableColumn fx:id="customerIDColumn2" text="Customer ID"/>
+                <TableColumn fx:id="customerNameColumn" prefWidth="70.0" text="Name"/>
+                <TableColumn fx:id="phoneNumColumn" prefWidth="111.0" text="Phone Number"/>
+                <TableColumn fx:id="addressColumn" prefWidth="193.0" text="Address"/>
+                <TableColumn fx:id="stateColumn" minWidth="0.0" prefWidth="131.0" text="State/Province"/>
+                <TableColumn fx:id="postalCodeColumn" prefWidth="123.0" text="Postal Code"/>
+            </columns>
+        </TableView>
+    </children>
 
 </AnchorPane>

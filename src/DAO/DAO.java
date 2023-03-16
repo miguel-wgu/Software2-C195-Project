@@ -28,14 +28,6 @@ public interface DAO<T> {
 	ObservableList<T> getAll() throws SQLException;
 
 	/**
-	 * Save.
-	 *
-	 * @param t the t
-	 * @throws SQLException the sql exception
-	 */
-	void save(T t) throws SQLException;
-
-	/**
 	 * Insert.
 	 *
 	 * @param t the t

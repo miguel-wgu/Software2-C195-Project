@@ -1,5 +1,6 @@
 package main;
 
+import DAO.ContactDAOImpl;
 import DAO.UserValidation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScene.fxml"));
-		primaryStage.setTitle(ResourceBundle.getBundle("Language", Locale.getDefault()).getString("title"));
+		primaryStage.setTitle(ResourceBundle.getBundle("Language", Locale.FRANCE).getString("title"));
 		primaryStage.setScene(new Scene(root, 488.0, 375));
 		primaryStage.show();
 	}

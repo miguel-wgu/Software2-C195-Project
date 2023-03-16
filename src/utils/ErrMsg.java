@@ -1,6 +1,7 @@
 package utils;
 
 import DAO.UserValidation;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 
 import java.sql.SQLException;
@@ -16,6 +17,9 @@ public class ErrMsg {
 	private static final Alert err = new Alert(Alert.AlertType.ERROR);
 	// variable to store ResourceBundle.getBundle("utils/Login", Locale.FRANCE).getString
 	private static final ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.FRANCE);
+
+	@FXML
+//	private Appointment selectedAppointment;
 
 	/**
 	 * Checks if username or password is empty and shows an alert
@@ -60,5 +64,12 @@ public class ErrMsg {
 			return true;
 		}
 		return false;
+	}
+
+	public static void noApptorCustSelected(String type, String message) {
+		err.setTitle("Error");
+		err.setContentText(type);
+		err.setHeaderText(message);
+		err.showAndWait();
 	}
 }
