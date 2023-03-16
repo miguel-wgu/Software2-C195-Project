@@ -1,6 +1,8 @@
 package controller;
 
-import DAO.AppointmentDaoImpl;
+import DAO.AppointmentDAOImpl;
+import DAO.CustomerDAOImpl;
+import DAO.FirstLevelDivisionDAOImpl;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +15,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Country;
 import model.Customer;
+import model.FirstLevelDivision;
 import utils.ErrMsg;
 
 import java.io.IOException;
@@ -115,27 +119,27 @@ public class MainController implements Initializable {
 	/**
 	 * The Customer ID column
 	 */
-	@FXML private TableColumn<Customer, Integer> customerIDColumn2;
+	@FXML private TableColumn<?, ?> customerIDColumn2;
 	/**
 	 * The Customer Name column
 	 */
-	@FXML private TableColumn<Customer, String> customerNameColumn;
+	@FXML private TableColumn<?, ?> customerNameColumn;
 	/**
 	 * The Phone Number column
 	 */
-	@FXML private TableColumn<Customer, String> phoneNumColumn;
+	@FXML private TableColumn<?, ?> phoneNumColumn;
 	/**
 	 * The Address column
 	 */
-	@FXML private TableColumn<Customer, String> addressColumn;
+	@FXML private TableColumn<?, ?> addressColumn;
 	/**
 	 * The State column
 	 */
-	@FXML private TableColumn<Customer, String> stateColumn;
+	@FXML private TableColumn<?, ?> stateColumn;
 	/**
 	 * The Postal Code column
 	 */
-	@FXML private TableColumn<Customer, String> postalCodeColumn;
+	@FXML private TableColumn<?, ?> postalCodeColumn;
 
 
 
@@ -145,28 +149,44 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		AppointmentDaoImpl appointmentsList = new AppointmentDaoImpl();
+		AppointmentDAOImpl appointmentsList = new AppointmentDAOImpl();
 		ObservableList<Appointment> appointments;
+
 		/**
 		 * Try block to catch any SQL exceptions, otherwise get all appointments from the database
 		 */
 		try {
 			appointments = appointmentsList.getAll();
+			appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+			titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+			descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+			locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+			contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+			typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+			startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+			endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+			customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+			userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+			appointmentsTable.setItems(appointments);
 		} catch (SQLException e) {
 			throw new RuntimeException("Error getting all appointments", e);
 		}
-		appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-		titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-		descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-		locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-		contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
-		typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-		startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-		endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-		customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-		userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
-		appointmentsTable.setItems(appointments);
 
+		CustomerDAOImpl customers = new CustomerDAOImpl();
+		ObservableList<Customer> customersList;
+
+		try {
+			customersList = customers.getAll();
+			customerIDColumn2.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+			customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+			phoneNumColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+			addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+			stateColumn.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
+			postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+			customersTable.setItems(customersList);
+		} catch (SQLException e) {
+			throw new RuntimeException("Error getting all customers", e);
+		}
 
 	}
 
@@ -216,7 +236,7 @@ public class MainController implements Initializable {
 	public void deleteApptBtn(ActionEvent actionEvent) throws SQLException {
 		try {
 			if (appointmentsTable.getSelectionModel().getSelectedItem() != null) {
-				AppointmentDaoImpl appointmentDao = new AppointmentDaoImpl();
+				AppointmentDAOImpl appointmentDao = new AppointmentDAOImpl();
 				Appointment appointment = appointmentsTable.getSelectionModel().getSelectedItem();
 				appointmentDao.delete(appointment);
 				appointmentsTable.getItems().remove(appointment);

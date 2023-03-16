@@ -1,6 +1,6 @@
 package controller;
 
-import DAO.AppointmentDaoImpl;
+import DAO.AppointmentDAOImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,7 +32,7 @@ public class AddApptController implements Initializable {
 	}
 
 	public void addApptBtnClick(ActionEvent actionEvent) throws SQLException {
-		AppointmentDaoImpl addAppt = new AppointmentDaoImpl();
+		AppointmentDAOImpl addAppt = new AppointmentDAOImpl();
 		Appointment appt = new Appointment(addLocation.getText(),apptTypeTextField.getText());
 		addAppt.insert(appt);
 	}

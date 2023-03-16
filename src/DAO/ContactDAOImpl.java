@@ -31,7 +31,6 @@ public class ContactDAOImpl implements DAO<Contact> {
 
 	@Override
 	public ObservableList<Contact> getAll() throws SQLException {
-		// Get all contacts from the database
 		ObservableList<Contact> contacts = FXCollections.observableArrayList();
 		String sqlStatement = "SELECT * FROM contacts";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);) {

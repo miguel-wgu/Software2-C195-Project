@@ -10,9 +10,7 @@ import java.time.LocalDateTime;
 /**
  * The type Appointment dao.
  */
-public class AppointmentDaoImpl implements DAO<Appointment> {
-//public class AppointmentDaoImpl implements AppointmentsDao{
-
+public class AppointmentDAOImpl implements DAO<Appointment> {
 	/**
 	 * Returns all appointments in the database.
 	 *

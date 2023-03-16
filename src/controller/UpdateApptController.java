@@ -1,6 +1,6 @@
 package controller;
 
-import DAO.AppointmentDaoImpl;
+import DAO.AppointmentDAOImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,7 +45,7 @@ public class UpdateApptController implements Initializable {
 
 	@FXML
 	public void updateApptBtnClick(ActionEvent actionEvent) {
-		AppointmentDaoImpl updatedAppt = new AppointmentDaoImpl();
+		AppointmentDAOImpl updatedAppt = new AppointmentDAOImpl();
 		selectedAppointment.setType(apptTypeTextField.getText());
 		updatedAppt.update(selectedAppointment);
 	}

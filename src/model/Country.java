@@ -17,18 +17,23 @@ public class Country {
 	 *
 	 * @param countryID     the country id
 	 * @param countryName   the country name
-	 * @param createDate    the create date
-	 * @param createdBy     the created by
-	 * @param lastUpdate    the last update
-	 * @param lastUpdateBy  the last update by
+//	 * @param createDate    the create date
+//	 * @param createdBy     the created by
+//	 * @param lastUpdate    the last update
+//	 * @param lastUpdateBy  the last update by
 	 */
-	public Country(int countryID, String countryName, LocalDateTime createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy) {
+//	public Country(int countryID, String countryName, LocalDateTime createDate, String createdBy, Timestamp lastUpdate, String lastUpdateBy) {
+//		this.countryID = countryID;
+//		this.countryName = countryName;
+//		this.createDate = createDate;
+//		this.createdBy = createdBy;
+//		this.lastUpdate = lastUpdate;
+//		this.lastUpdateBy = lastUpdateBy;
+//	}
+
+	public Country(int countryID, String countryName) {
 		this.countryID = countryID;
 		this.countryName = countryName;
-		this.createDate = createDate;
-		this.createdBy = createdBy;
-		this.lastUpdate = lastUpdate;
-		this.lastUpdateBy = lastUpdateBy;
 	}
 
 	/**
