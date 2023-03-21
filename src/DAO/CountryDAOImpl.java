@@ -40,19 +40,18 @@ public class CountryDAOImpl implements DAO<Country> {
 		}
 	}
 
-
 	@Override
 	public void insert(Country country) throws SQLException {
-
+		// Not used
 	}
 
 	@Override
 	public void update(Country country) throws SQLException {
-
+		// Not used
 	}
 
 	@Override
 	public void delete(Country country) throws SQLException {
-
+		// Not used
 	}
 }

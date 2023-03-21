@@ -1,22 +1,16 @@
 package controller;
 
-import DAO.UserValidation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import utils.ErrMsg;
 import utils.HelperFunctions;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -42,6 +36,14 @@ public class LoginController implements Initializable {
 	private Label currentLocationLabel;
 
 
+	private static String userName;
+
+	@FXML
+	public static String getUserName() {
+		return userName;
+	}
+
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		ZoneId zoneId = ZoneId.systemDefault();
@@ -59,21 +61,14 @@ public class LoginController implements Initializable {
 	 * Login btn click.
 	 *
 	 * @param actionEvent the action event
-	 * @throws IOException the io exception
 	 */
-	public void loginBtnClick(ActionEvent actionEvent) throws IOException, SQLException {
-		/**
-		 * Get username and password from text fields
-		 */
-		String userName = userNameTextField.getText();
+	public void loginBtnClick(ActionEvent actionEvent) {
+		userName = userNameTextField.getText();
 		String password = loginPasswordField.getText();
 
 		// check for empty string, if false start MainScene
 		try {
 			if (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password)) {
-				/**
-				 * After login is successful, load the main scene
-				 */
 				HelperFunctions.goToMain(actionEvent);
 			}
 		} catch (Exception e) {
@@ -83,10 +78,8 @@ public class LoginController implements Initializable {
 
 	/**
 	 * Clear login btn click.
-	 *
-	 * @param actionEvent the action event
 	 */
-	public void clearLoginBtnClick(ActionEvent actionEvent) {
+	public void clearLoginBtnClick() {
 		userNameTextField.setText("");
 		loginPasswordField.setText("");
 	}

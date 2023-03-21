@@ -2,10 +2,15 @@ package DAO;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import model.Appointment;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The type Appointment dao.
@@ -43,7 +48,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	@Override
 	public Appointment get(int appointmentID) throws SQLException {
 		String sqlStatement = "SELECT * FROM appointments WHERE Appointment_ID = ?";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);) {
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, appointmentID);
 			try (ResultSet result = ps.executeQuery()) {
 				if (result.next()) {
@@ -65,7 +70,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	@Override
 	public void insert(Appointment appointment) throws SQLException {
 		String sqlStatement = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);) {
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			setPrepStatementValues(ps, appointment);
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -101,10 +106,24 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	@Override
 	public void delete(Appointment appointment) throws SQLException {
 		String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
-		try {
-			PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, appointment.getAppointmentID());
-			ps.executeUpdate();
+			int numRowsDeleted = ps.executeUpdate();
+			if (numRowsDeleted == 1) {
+				// Appointment deleted alert
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Appointment Deleted");
+				alert.setHeaderText("Appointment Deleted");
+				alert.setContentText("Successfully deleted appointment with ID " + appointment.getAppointmentID());
+				alert.showAndWait();
+			} else {
+				// Appointment not deleted alert
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("Appointment Not Deleted");
+				alert.setHeaderText("Appointment Not Deleted");
+				alert.setContentText("Failed to delete appointment with ID " + appointment.getAppointmentID());
+				alert.showAndWait();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -139,14 +158,17 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	 * @throws SQLException if the appointment already exists.
 	 */
 	private void setPrepStatementValues(PreparedStatement ps, Appointment appointment) throws SQLException {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' h:mm a");
+		LocalDateTime dateTime = LocalDateTime.parse(appointment.getStartTime(), formatter);
+		Timestamp timestamp = Timestamp.valueOf(dateTime);
 		ps.setString(1, appointment.getTitle());
 		ps.setString(2, appointment.getDescription());
 		ps.setString(3, appointment.getLocation());
 		ps.setString(4, appointment.getType());
-		ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-		ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
-		ps.setInt(7, 2);
-		ps.setInt(8, 1);
-		ps.setInt(9, 1);
+		ps.setTimestamp(5, timestamp);
+		ps.setTimestamp(6, timestamp);
+		ps.setInt(7, appointment.getCustomerID());
+		ps.setInt(8, appointment.getUserID());
+		ps.setInt(9, appointment.getContactID());
 	}
 }

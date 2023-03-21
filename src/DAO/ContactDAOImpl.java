@@ -12,17 +12,15 @@ public class ContactDAOImpl implements DAO<Contact> {
 
 	@Override
 	public Contact get(int id) throws SQLException {
-		// Get a single contact from the database based on the contact ID
 		String sqlStatement = "SELECT * FROM contacts WHERE Contact_ID = ?";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);) {
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, id);
 			try (ResultSet result = ps.executeQuery()) {
 				if (result.next()) {
 					int contactID = result.getInt("Contact_ID");
 					String contactName = result.getString("Contact_Name");
 					String email = result.getString("Email");
-					Contact contact = new Contact(contactID, contactName, email);
-					return contact;
+					return new Contact(contactID, contactName, email);
 				}
 			}
 		}
@@ -33,7 +31,7 @@ public class ContactDAOImpl implements DAO<Contact> {
 	public ObservableList<Contact> getAll() throws SQLException {
 		ObservableList<Contact> contacts = FXCollections.observableArrayList();
 		String sqlStatement = "SELECT * FROM contacts";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);) {
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			try (ResultSet result = ps.executeQuery()) {
 				while (result.next()) {
 					int contactID = result.getInt("Contact_ID");
@@ -49,17 +47,17 @@ public class ContactDAOImpl implements DAO<Contact> {
 
 	@Override
 	public void insert(Contact contact) throws SQLException {
-
+		// Not used
 	}
 
 	@Override
 	public void update(Contact contact) throws SQLException {
-
+		// Not used
 	}
 
 	@Override
 	public void delete(Contact contact) throws SQLException {
-
+		// Not used
 	}
 
 	public String getNameBasedOnID(int ID) throws SQLException {
@@ -69,7 +67,7 @@ public class ContactDAOImpl implements DAO<Contact> {
 				return contact.getName();
 			}
 		}
-		return "";
+		return null;
 	}
 
 	public String getName(int contactID) {
@@ -78,6 +76,6 @@ public class ContactDAOImpl implements DAO<Contact> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return null;
 	}
 }

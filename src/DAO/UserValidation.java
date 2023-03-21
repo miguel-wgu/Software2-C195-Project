@@ -17,7 +17,7 @@ public abstract class UserValidation extends User {
 	 * @param userName the username
 	 * @param password the password
 	 */
-	public UserValidation(int userID, String userName, String password) {
+	protected UserValidation(int userID, String userName, String password) {
 		super(userID, userName, password);
 	}
 
@@ -31,15 +31,14 @@ public abstract class UserValidation extends User {
 	 */
 	public static int validateUserID(String userName, String password) throws SQLException {
 		String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
-		PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
-		ps.setString(1, userName);
-		ps.setString(2, password);
-		ps.execute();
-		ResultSet result = ps.getResultSet();
-		result.next();
-		if (result.getRow() == 1) {
-			System.out.println("Successfully logged in as " + userName + " this message is from UserValidation.java");
-			return result.getInt("User_ID");
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setString(1, userName);
+			ps.setString(2, password);
+			ps.execute();
+			try (ResultSet result = ps.getResultSet()) {
+				result.next();
+				if (result.getRow() == 1) return result.getInt("User_ID");
+			}
 		}
 		return -1;
 	}

@@ -2,28 +2,25 @@ package controller;
 
 import DAO.AppointmentDAOImpl;
 import DAO.CustomerDAOImpl;
-import DAO.FirstLevelDivisionDAOImpl;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Country;
 import model.Customer;
-import model.FirstLevelDivision;
 import utils.ErrMsg;
+import utils.HelperFunctions;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -106,55 +103,49 @@ public class MainController implements Initializable {
 	private Button updateApptBtn;
 
 
-
-
-
-
-
-
 	/**
 	 * The Customer Table
 	 */
-	@FXML private TableView<Customer> customersTable;
+	@FXML
+	private TableView<Customer> customersTable;
 	/**
 	 * The Customer ID column
 	 */
-	@FXML private TableColumn<?, ?> customerIDColumn2;
+	@FXML
+	private TableColumn<Customer, Integer> customerIDColumn2;
 	/**
 	 * The Customer Name column
 	 */
-	@FXML private TableColumn<?, ?> customerNameColumn;
+	@FXML
+	private TableColumn<Customer, String> customerNameColumn;
 	/**
 	 * The Phone Number column
 	 */
-	@FXML private TableColumn<?, ?> phoneNumColumn;
+	@FXML
+	private TableColumn<Customer, String> phoneNumColumn;
 	/**
 	 * The Address column
 	 */
-	@FXML private TableColumn<?, ?> addressColumn;
+	@FXML
+	private TableColumn<Customer, String> addressColumn;
 	/**
 	 * The State column
 	 */
-	@FXML private TableColumn<?, ?> stateColumn;
+	@FXML
+	private TableColumn<Customer, String> stateColumn;
 	/**
 	 * The Postal Code column
 	 */
-	@FXML private TableColumn<?, ?> postalCodeColumn;
-
-
-
-
-
+	@FXML
+	private TableColumn<Customer, String> postalCodeColumn;
+	@FXML
+	private Button addCustomerBtn;
 
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		AppointmentDAOImpl appointmentsList = new AppointmentDAOImpl();
 		ObservableList<Appointment> appointments;
-
-		/**
-		 * Try block to catch any SQL exceptions, otherwise get all appointments from the database
-		 */
 		try {
 			appointments = appointmentsList.getAll();
 			appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -193,24 +184,22 @@ public class MainController implements Initializable {
 	/**
 	 * Add appt btn click.
 	 *
-	 * @param actionEvent the action event
 	 * @throws IOException the io exception
 	 */
-	public void addApptBtnClick(ActionEvent actionEvent) throws IOException {
+	public void addApptBtnClick() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddApptScene.fxml"));
 		Stage stage = (Stage) addApptBtn.getScene().getWindow();
 		Scene scene = new Scene(loader.load());
-		stage.setTitle("Appointment Scheduler");
+		stage.setTitle("Add Appointment");
 		stage.setScene(scene);
 	}
 
 	/**
 	 * Update appt btn.
 	 *
-	 * @param actionEvent the action event
 	 * @throws IOException the io exception
 	 */
-	public void updateApptBtn(ActionEvent actionEvent) throws IOException {
+	public void updateApptBtn() throws IOException {
 		selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
 		try {
 			if (selectedAppointment == null) {
@@ -219,7 +208,7 @@ public class MainController implements Initializable {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateApptScene.fxml"));
 				Stage stage = (Stage) updateApptBtn.getScene().getWindow();
 				Scene scene = new Scene(loader.load());
-				stage.setTitle("Appointment Scheduler");
+				stage.setTitle("Update Appointment");
 				stage.setScene(scene);
 			}
 		} catch (NullPointerException e) {
@@ -230,21 +219,67 @@ public class MainController implements Initializable {
 	/**
 	 * Delete appt btn.
 	 *
-	 * @param actionEvent the action event
 	 * @throws SQLException the sql exception
 	 */
-	public void deleteApptBtn(ActionEvent actionEvent) throws SQLException {
+	public void deleteApptBtn() throws SQLException {
 		try {
 			if (appointmentsTable.getSelectionModel().getSelectedItem() != null) {
 				AppointmentDAOImpl appointmentDao = new AppointmentDAOImpl();
 				Appointment appointment = appointmentsTable.getSelectionModel().getSelectedItem();
 				appointmentDao.delete(appointment);
 				appointmentsTable.getItems().remove(appointment);
+				HelperFunctions.appointmentDeleteAlert(appointment.getAppointmentID(), appointment.getType());
 			} else {
 				throw new NullPointerException();
 			}
 		} catch (NullPointerException e) {
 			ErrMsg.noApptorCustSelected("Please select an appointment to delete", "No appointment selected");
+		}
+	}
+
+	public void addCustomerBtnClick() throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCustomerScene.fxml"));
+		Stage stage = (Stage) addCustomerBtn.getScene().getWindow();
+		Scene scene = new Scene(loader.load());
+		stage.setTitle("Add Customer");
+		stage.setScene(scene);
+	}
+
+	public void updateCustomerBtnClick(ActionEvent actionEvent) {
+		// TODO: add update customer functionality
+	}
+
+	public void deleteCustomerBtnClick() {
+		Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+		if (selectedCustomer == null) {
+			ErrMsg.noApptorCustSelected("Please select a customer to delete", "No customer selected");
+			return;
+		}
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Delete Customer");
+		alert.setHeaderText("Are you sure you want to delete " + selectedCustomer.getCustomerName() + "?");
+		alert.setContentText("This will delete all appointments associated with this customer");
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			try {
+				CustomerDAOImpl customerDao = new CustomerDAOImpl();
+				HelperFunctions.deleteCustomerAppointments(selectedCustomer.getCustomerID());
+				// refresh appointments table
+				AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
+				ObservableList<Appointment> appointmentsList;
+				appointmentsList = appointmentDAO.getAll();
+				appointmentsTable.setItems(appointmentsList);
+				customerDao.delete(selectedCustomer);
+				customersTable.getItems().remove(selectedCustomer);
+
+				Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+				successAlert.setTitle("Customer Deleted");
+				successAlert.setHeaderText("Success!");
+				successAlert.setContentText(selectedCustomer.getCustomerName() + " has been deleted");
+				successAlert.showAndWait();
+			} catch (SQLException e) {
+				ErrMsg.noApptorCustSelected("Error deleting " + selectedCustomer.getCustomerName(), "Error");
+			}
 		}
 	}
 }

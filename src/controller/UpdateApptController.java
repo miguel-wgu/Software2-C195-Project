@@ -11,6 +11,7 @@ import utils.HelperFunctions;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
@@ -37,14 +38,14 @@ public class UpdateApptController implements Initializable {
 		apptTitleTextField.setText(selectedAppointment.getTitle());
 		apptTypeTextField.setText(selectedAppointment.getType());
 		updateLocation.setText(selectedAppointment.getLocation());
-		startTimeCB.setValue(selectedAppointment.getStartTime());
+		startTimeCB.setValue(Timestamp.valueOf(selectedAppointment.getStartTime()).toLocalDateTime());
 		updateContactNameCB.setValue(contactName);
 		updateContactNameCB.setItems(HelperFunctions.getContactNames());
 
 	}
 
 	@FXML
-	public void updateApptBtnClick(ActionEvent actionEvent) {
+	public void updateApptBtnClick() {
 		AppointmentDAOImpl updatedAppt = new AppointmentDAOImpl();
 		selectedAppointment.setType(apptTypeTextField.getText());
 		updatedAppt.update(selectedAppointment);

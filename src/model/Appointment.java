@@ -1,11 +1,12 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
-	// Create an appointment class that creates an appointment object
-//	private int appointmentID;
-	// appointmentID is the primary key in the database and is auto incremented
+	private int customerID;
+	private int userID;
+	private int contactID;
 	private int appointmentID;
 	private String title;
 	private String description;
@@ -13,9 +14,6 @@ public class Appointment {
 	private String type;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
-	public int customerID;
-	public int userID;
-	public int contactID;
 
 	public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime, int customerID, int userID, int contactID) {
 		this.appointmentID = appointmentID;
@@ -28,20 +26,6 @@ public class Appointment {
 		this.customerID = customerID;
 		this.userID = userID;
 		this.contactID = contactID;
-	}
-
-	// Set default values for the appointment object
-	public Appointment(String location, String type) {
-		this.appointmentID = 0;
-		this.title = "";
-		this.description = "";
-		this.location = location;
-		this.type = type;
-		this.startTime = LocalDateTime.now();
-		this.endTime = LocalDateTime.now();
-		this.customerID = 0;
-		this.userID = 0;
-		this.contactID = 0;
 	}
 
 	/**
@@ -140,8 +124,10 @@ public class Appointment {
 	 *
 	 * @return the start time
 	 */
-	public LocalDateTime getStartTime() {
-		return startTime;
+	public String getStartTime() {
+		LocalDateTime dateTime = this.startTime;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' h:mm a");
+		return dateTime.format(formatter);
 	}
 
 	/**
@@ -158,8 +144,10 @@ public class Appointment {
 	 *
 	 * @return the end time
 	 */
-	public LocalDateTime getEndTime() {
-		return endTime;
+	public String getEndTime() {
+		LocalDateTime dateTime = this.endTime;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' h:mm a");
+		return dateTime.format(formatter);
 	}
 
 	/**
@@ -170,78 +158,6 @@ public class Appointment {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-
-//	/**
-//	 * Gets create date.
-//	 *
-//	 * @return the create date
-//	 */
-//	public LocalDateTime getCreateDate() {
-//		return createDate;
-//	}
-//
-//	/**
-//	 * Sets create date.
-//	 *
-//	 * @param createDate the create date
-//	 */
-//	public void setCreateDate(LocalDateTime createDate) {
-//		this.createDate = createDate;
-//	}
-//
-//	/**
-//	 * Gets created by.
-//	 *
-//	 * @return the created by
-//	 */
-//	public String getCreatedBy() {
-//		return createdBy;
-//	}
-//
-//	/**
-//	 * Sets created by.
-//	 *
-//	 * @param createdBy the created by
-//	 */
-//	public void setCreatedBy(String createdBy) {
-//		this.createdBy = createdBy;
-//	}
-
-//	/**
-//	 * Gets last update.
-//	 *
-//	 * @return the last update
-//	 */
-//	public LocalDate getLastUpdate() {
-//		return lastUpdate;
-//	}
-//
-//	/**
-//	 * Sets last update.
-//	 *
-//	 * @param lastUpdate the last update
-//	 */
-//	public void setLastUpdate(LocalDate lastUpdate) {
-//		this.lastUpdate = lastUpdate;
-//	}
-//
-//	/**
-//	 * Gets last update by.
-//	 *
-//	 * @return the last update by
-//	 */
-//	public String getLastUpdateBy() {
-//		return lastUpdateBy;
-//	}
-//
-//	/**
-//	 * Sets last update by.
-//	 *
-//	 * @param lastUpdateBy the last update by
-//	 */
-//	public void setLastUpdateBy(String lastUpdateBy) {
-//		this.lastUpdateBy = lastUpdateBy;
-//	}
 
 	/**
 	 * Gets customer id.
