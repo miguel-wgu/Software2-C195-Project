@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="824.0" prefWidth="1355.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+    <children>
+        <TableView fx:id="custApptTableView" layoutX="89.0" layoutY="50.0" prefHeight="250.0" prefWidth="889.0">
+            <columns>
+                <TableColumn fx:id="rep1ApptIDCol" prefWidth="60.0" text="Appt ID" />
+                <TableColumn fx:id="rep1TitleCol" prefWidth="123.0" text="Title" />
+                <TableColumn fx:id="req1DescriptionCol" prefWidth="126.0" text="Description" />
+                <TableColumn fx:id="rep1TypeCol" prefWidth="164.0" text="Type" />
+                <TableColumn fx:id="rep1StartCol" prefWidth="169.0" text="Start Date/Time" />
+                <TableColumn fx:id="rep1EndCol" prefWidth="169.0" text="End Date/Time" />
+                <TableColumn fx:id="rep1CustIDCol" prefWidth="77.0" text="Customer ID" />
+            </columns>
+        </TableView>
+        <TableView fx:id="monthTypeTableView" layoutX="89.0" layoutY="412.0" prefHeight="250.0" prefWidth="314.0">
+            <columns>
+                <TableColumn fx:id="rep2MonthCol" prefWidth="103.0" text="Month" />
+                <TableColumn fx:id="rep2TypeCol" prefWidth="132.0" text="Type" />
+                <TableColumn fx:id="rep2TotalCol" prefWidth="77.0" style="-fx-alignment: center;" text="Total" />
+            </columns>
+        </TableView>
+        <ComboBox fx:id="contactNameCB" layoutX="266.0" layoutY="306.0" onAction="#contactCBSelect" prefWidth="175.0" />
+      <TableView fx:id="countryDivisionTableView" layoutX="521.0" layoutY="412.0" prefHeight="250.0" prefWidth="314.0">
+        <columns>
+          <TableColumn fx:id="rep3CountryCol" prefWidth="94.0" text="Country" />
+          <TableColumn fx:id="rep3DivisionCol" prefWidth="88.0" text="State/Province" />
+            <TableColumn fx:id="rep3TotalCol" prefWidth="85.0" text="Total" />
+        </columns>
+      </TableView>
+    </children>
+</AnchorPane>

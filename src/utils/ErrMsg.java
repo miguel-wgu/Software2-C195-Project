@@ -14,9 +14,7 @@ import java.util.ResourceBundle;
  * @author Miguel Guzman
  */
 public class ErrMsg {
-	private static final Alert err = new Alert(Alert.AlertType.ERROR);
-	// variable to store ResourceBundle.getBundle("utils/Login", Locale.FRANCE).getString
-	private static final ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.FRANCE);
+	private static final Alert err = new Alert(Alert.AlertType.ERROR);	private static final ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.getDefault());
 
 	@FXML
 //	private Appointment selectedAppointment;

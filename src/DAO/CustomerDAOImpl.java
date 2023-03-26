@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import model.Customer;
+import model.Report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +14,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class CustomerDAOImpl implements DAO<Customer> {
-	@FXML
-	String username;
-
 	public static final String SELECT_BY_ID = "SELECT * FROM customers " +
 			"INNER JOIN first_level_divisions " +
 			"ON customers.Division_ID = first_level_divisions.Division_ID " +
@@ -26,6 +24,8 @@ public class CustomerDAOImpl implements DAO<Customer> {
 			"from customers " +
 			"INNER JOIN  first_level_divisions " +
 			"ON customers.Division_ID = first_level_divisions.Division_ID";
+	@FXML
+	String username;
 
 	@Override
 	public Customer get(int id) throws SQLException {
@@ -76,7 +76,21 @@ public class CustomerDAOImpl implements DAO<Customer> {
 
 	@Override
 	public void update(Customer customer) throws SQLException {
-        // TODO: 3/29/2021  Update customer
+		// TODO: 3/29/2021  Update customer
+		String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setString(1, customer.getCustomerName());
+			ps.setString(2, customer.getAddress());
+			ps.setString(3, customer.getPostalCode());
+			ps.setString(4, customer.getPhone());
+			ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setString(6, username);
+			ps.setInt(7, customer.getDivisionID());
+			ps.setInt(8, customer.getCustomerID());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -98,4 +112,34 @@ public class CustomerDAOImpl implements DAO<Customer> {
 		String divisionName = result.getString("Division");
 		return new Customer(customerID, customerName, address, postalCode, phone, divisionID, divisionName);
 	}
+
+
+
+
+//	public ObservableList<Customer> getAppointmentByDivision() {
+//		ObservableList<Customer> reports = FXCollections.observableArrayList();
+//		String sqlStatement = "SELECT Division, Country, COUNT(*) AS total_appointments FROM Appointments JOIN Customers ON Appointments.Customer_ID = Customers.Customer_ID JOIN First_Level_Divisions ON Customers.Division_ID = First_Level_Divisions.Division_ID JOIN Countries ON First_Level_Divisions.Country_ID = Countries.Country_ID GROUP BY Division, Country ORDER BY Division";
+//		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
+//		     ResultSet result = ps.executeQuery()) {
+//			while (result.next()) {
+//				reports.add(addReportToList2(result));
+//			}
+//			return reports;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
+//
+//	private Customer addReportToList2(ResultSet result) {
+//		try {
+//			String division = result.getString("Division");
+//			String country = result.getString("Country");
+//			int total = result.getInt("total_appointments");
+//			return new Customer(division, country, total);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 }

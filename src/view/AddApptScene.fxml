@@ -26,7 +26,7 @@
             <Font name="Nirmala UI" size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="customerNameCB" layoutX="195.0" layoutY="166.0" prefWidth="175.0" promptText="Select a Customer" AnchorPane.topAnchor="166.0" />
+      <ComboBox fx:id="customerNameCB" layoutX="195.0" layoutY="166.0" prefWidth="175.0" promptText="Select a Customer" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="166.0" />
       <Label layoutX="41.0" layoutY="207.0" text="Contact" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="207.0">
          <font>
             <Font name="Nirmala UI" size="15.0" />

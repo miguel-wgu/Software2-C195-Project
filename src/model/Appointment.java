@@ -28,6 +28,16 @@ public class Appointment {
 		this.contactID = contactID;
 	}
 
+	public Appointment(int appointmentID, String title, String description, String type, LocalDateTime start, LocalDateTime end, int customerId){
+		this.appointmentID = appointmentID;
+		this.title = title;
+		this.description = description;
+		this.type = type;
+		this.startTime = start;
+		this.endTime = end;
+		this.customerID = customerId;
+	}
+
 	/**
 	 * Gets appointment id.
 	 *
@@ -130,11 +140,19 @@ public class Appointment {
 		return dateTime.format(formatter);
 	}
 
-	/**
-	 * Sets start time.
-	 *
-	 * @param startTime the start time
-	 */
+//	public LocalDateTime getStartTime() {
+//		return this.startTime;
+//	}
+
+//	/**
+//	 * Sets start time.
+//	 *
+//	 * @param startTime the start time
+//	 */
+	public LocalDateTime updateGetStartTime() {
+		return this.startTime;
+	}
+
 	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
@@ -148,6 +166,10 @@ public class Appointment {
 		LocalDateTime dateTime = this.endTime;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' h:mm a");
 		return dateTime.format(formatter);
+	}
+
+	public LocalDateTime updateGetEndTime() {
+		return this.endTime;
 	}
 
 	/**

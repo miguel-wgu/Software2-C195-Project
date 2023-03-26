@@ -4,13 +4,12 @@ import DAO.*;
 import controller.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-
-import javafx.event.ActionEvent;
 import model.*;
 
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class HelperFunctions {
 		return customerNames;
 	}
 
-	// get customer ID from customer name
+	//	 get customer ID from customer name
 	public static int getCustomerID(String customerName) {
 		int customerID;
 		String sqlStatement = "SELECT Customer_ID FROM customers WHERE Customer_Name = ?";
@@ -184,6 +183,23 @@ public class HelperFunctions {
 		return divisionList;
 	}
 
+	public static int getDivisionID(String divisionName) {
+		int divisionID;
+		String sqlStatement = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setString(1, divisionName);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					divisionID = result.getInt("Division_ID");
+					return divisionID;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
 	public static int getNextCustomerID() throws SQLException {
 		int nextID;
 		String sqlStatement = "SELECT MAX(Customer_ID) FROM customers";
@@ -249,4 +265,57 @@ public class HelperFunctions {
 			e.printStackTrace();
 		}
 	}
+
+	// Get customer's country name
+	public static String getCountry(int customerID) {
+		String countryName = "";
+//		String sqlStatement = "SELECT Country FROM countries WHERE Country_ID = (SELECT Country_ID FROM customers WHERE Customer_ID = ?)";
+		String sqlStatement = "SELECT Country FROM countries WHERE Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID = (SELECT Division_ID FROM customers WHERE Customer_ID = ?))";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setInt(1, customerID);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					countryName = result.getString("Country");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countryName;
+	}
+
+	// Get username from user ID in appointments table
+	public static String getUserName(int userID) {
+		String userName = "";
+		String sqlStatement = "SELECT User_Name FROM users WHERE User_ID = ?";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setInt(1, userID);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					userName = result.getString("User_Name");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userName;
+	}
+
+	public static String getCustomerName(int customerID) {
+		String customerName = "";
+		String sqlStatement = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setInt(1, customerID);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					customerName = result.getString("Customer_Name");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customerName;
+	}
+
+
 }

@@ -2,6 +2,7 @@ package controller;
 
 import DAO.AppointmentDAOImpl;
 import DAO.CustomerDAOImpl;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -27,11 +29,21 @@ import java.util.ResourceBundle;
  * The type Main controller.
  */
 public class MainController implements Initializable {
+	private static Appointment selectedAppointment;
+	private static Customer selectedCustomer;
+	private final AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
+	private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 	/**
 	 * The Appointment table.
 	 */
 	@FXML
 	private TableView<Appointment> appointmentsTable;
+	@FXML
+	private RadioButton weekRadio;
+	@FXML
+	private RadioButton monthRadio;
+	@FXML
+	private RadioButton allRadio;
 	/**
 	 * The Appointment id column.
 	 */
@@ -82,18 +94,6 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private TableColumn<Appointment, Integer> userIDColumn;
-
-	private static Appointment selectedAppointment;
-
-	/**
-	 * Gets selected appointment.
-	 *
-	 * @return the selected appointment
-	 */
-	public static Appointment getSelectedAppointment() {
-		return selectedAppointment;
-	}
-
 	/**
 	 * The Add appointment button.
 	 */
@@ -101,8 +101,6 @@ public class MainController implements Initializable {
 	private Button addApptBtn;
 	@FXML
 	private Button updateApptBtn;
-
-
 	/**
 	 * The Customer Table
 	 */
@@ -140,14 +138,28 @@ public class MainController implements Initializable {
 	private TableColumn<Customer, String> postalCodeColumn;
 	@FXML
 	private Button addCustomerBtn;
+	@FXML
+	private Button updateCustomerBtn;
+	@FXML
+	private Button reportsBtn;
 
+	/**
+	 * Gets selected appointment.
+	 *
+	 * @return the selected appointment
+	 */
+	public static Appointment getSelectedAppointment() {
+		return selectedAppointment;
+	}
+
+	public static Customer getSelectedCustomer() {
+		return selectedCustomer;
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		AppointmentDAOImpl appointmentsList = new AppointmentDAOImpl();
-		ObservableList<Appointment> appointments;
 		try {
-			appointments = appointmentsList.getAll();
+			allAppointments = appointmentDAO.getAll();
 			appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
 			titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 			descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -158,14 +170,13 @@ public class MainController implements Initializable {
 			endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 			customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
 			userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
-			appointmentsTable.setItems(appointments);
-		} catch (SQLException e) {
-			throw new RuntimeException("Error getting all appointments", e);
+			appointmentsTable.setItems(allAppointments);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		CustomerDAOImpl customers = new CustomerDAOImpl();
 		ObservableList<Customer> customersList;
-
 		try {
 			customersList = customers.getAll();
 			customerIDColumn2.setCellValueFactory(new PropertyValueFactory<>("customerID"));
@@ -245,8 +256,23 @@ public class MainController implements Initializable {
 		stage.setScene(scene);
 	}
 
-	public void updateCustomerBtnClick(ActionEvent actionEvent) {
-		// TODO: add update customer functionality
+	public void updateCustomerBtnClick() {
+		selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+		try {
+			if (selectedCustomer == null) {
+				throw new NullPointerException();
+			} else {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateCustomerScene.fxml"));
+				Stage stage = (Stage) updateCustomerBtn.getScene().getWindow();
+				Scene scene = new Scene(loader.load());
+				stage.setTitle("Update Customer");
+				stage.setScene(scene);
+			}
+		} catch (NullPointerException e) {
+			ErrMsg.noApptorCustSelected("Please select a customer to update", "No customer selected");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void deleteCustomerBtnClick() {
@@ -264,14 +290,12 @@ public class MainController implements Initializable {
 			try {
 				CustomerDAOImpl customerDao = new CustomerDAOImpl();
 				HelperFunctions.deleteCustomerAppointments(selectedCustomer.getCustomerID());
-				// refresh appointments table
-				AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
+//				AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
 				ObservableList<Appointment> appointmentsList;
 				appointmentsList = appointmentDAO.getAll();
 				appointmentsTable.setItems(appointmentsList);
 				customerDao.delete(selectedCustomer);
 				customersTable.getItems().remove(selectedCustomer);
-
 				Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
 				successAlert.setTitle("Customer Deleted");
 				successAlert.setHeaderText("Success!");
@@ -280,6 +304,42 @@ public class MainController implements Initializable {
 			} catch (SQLException e) {
 				ErrMsg.noApptorCustSelected("Error deleting " + selectedCustomer.getCustomerName(), "Error");
 			}
+		}
+	}
+
+	public void weekSelect() throws SQLException {
+		appointmentDAO.getAll();
+		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+		for (Appointment appointment : allAppointments) {
+			if (appointment.updateGetStartTime().isAfter(LocalDateTime.now()) && appointment.updateGetEndTime().isBefore(LocalDateTime.now().plusDays(7)))
+				appointments.add(appointment);
+			appointmentsTable.setItems(appointments);
+		}
+	}
+
+	public void monthSelect() throws SQLException {
+		appointmentDAO.getAll();
+		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+		for (Appointment appointment : allAppointments) {
+			if (appointment.updateGetStartTime().isAfter(LocalDateTime.now()) && appointment.updateGetEndTime().isBefore(LocalDateTime.now().plusDays(30)))
+				appointments.add(appointment);
+			appointmentsTable.setItems(appointments);
+		}
+	}
+
+	public void allSelect() throws SQLException {
+		appointmentsTable.setItems(appointmentDAO.getAll());
+	}
+
+	public void reportsBtnClick(ActionEvent actionEvent) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ReportsScene.fxml"));
+			Stage stage = (Stage) reportsBtn.getScene().getWindow();
+			Scene scene = new Scene(loader.load());
+			stage.setTitle("Reports");
+			stage.setScene(scene);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

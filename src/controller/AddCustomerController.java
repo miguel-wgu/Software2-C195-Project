@@ -84,7 +84,8 @@ public class AddCustomerController implements Initializable {
 	public void saveBtnClick(ActionEvent actionEvent) throws SQLException, IOException {
 		CustomerDAOImpl addCustomer = new CustomerDAOImpl();
 		int customerID = HelperFunctions.getNextCustomerID();
-		int divisionID = Integer.parseInt(customerIDTextField.getText());
+//		int divisionID = Integer.parseInt(customerIDTextField.getText());
+		int divisionID = HelperFunctions.getDivisionID(divisionCB.getValue());
 		Customer customer = new Customer(customerID, customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(), phoneNumberTextField.getText(), divisionID, divisionCB.getValue());
 		addCustomer.insert(customer);
 		HelperFunctions.goToMain(actionEvent);

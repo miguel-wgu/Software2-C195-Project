@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="569.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateApptController">
+<AnchorPane prefHeight="675.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateApptController">
     <children>
-        <Label layoutX="225.0" layoutY="40.0" text="Update Appointment" AnchorPane.topAnchor="35.0">
+        <Label layoutX="225.0" layoutY="40.0" text="Update Appointment" AnchorPane.leftAnchor="225.0" AnchorPane.topAnchor="35.0">
             <font>
                 <Font name="Nirmala UI" size="24.0" />
             </font></Label>
-        <Label layoutX="216.0" layoutY="483.0" prefHeight="25.0" prefWidth="106.0" text="AppointmentID" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="216.0" AnchorPane.topAnchor="483.0">
+        <Label layoutX="216.0" layoutY="483.0" prefHeight="25.0" prefWidth="106.0" text="AppointmentID" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="87.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <TextField fx:id="appointmentIDTextField" disable="true" editable="false" layoutX="191.0" layoutY="508.0" prefHeight="25.0" prefWidth="141.0" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="191.0" AnchorPane.topAnchor="508.0" />
-        <Label layoutX="71.0" layoutY="87.0" text="User ID" AnchorPane.leftAnchor="71.0" AnchorPane.topAnchor="87.0">
+        <TextField fx:id="appointmentIDTextField" disable="true" editable="false" layoutX="195.0" layoutY="85.0" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="85.0" />
+        <Label layoutX="71.0" layoutY="87.0" text="User" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="127.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font>
         </Label>
-        <ComboBox fx:id="userIDCB" layoutX="18.0" layoutY="113.0" prefWidth="150.0" promptText="Select a User ID" AnchorPane.topAnchor="113.0" />
-        <Label layoutX="54.0" layoutY="168.0" text="Customer ID" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="508.0" AnchorPane.topAnchor="168.0">
+        <ComboBox fx:id="userNameCB" layoutX="190.0" layoutY="125.0" prefWidth="175.0" promptText="Select a User" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="125.0" />
+        <Label layoutX="41.0" layoutY="167.0" text="Customer" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="167.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font>
         </Label>
-        <ComboBox fx:id="customerIDCB" layoutX="18.0" layoutY="195.0" prefWidth="150.0" promptText="Select a Customer ID" AnchorPane.topAnchor="195.0" />
-        <Label layoutX="69.0" layoutY="244.0" text="Contact" AnchorPane.topAnchor="244.0">
+        <ComboBox fx:id="customerNameCB" layoutX="131.0" layoutY="227.0" prefWidth="175.0" promptText="Select a Customer" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="166.0" />
+        <Label layoutX="41.0" layoutY="207.0" text="Contact" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="207.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <ComboBox fx:id="updateContactNameCB" layoutX="18.0" layoutY="270.0" prefWidth="150.0" promptText="Select a Contact" AnchorPane.topAnchor="270.0" />
-        <Label layoutX="289.0" layoutY="87.0" prefHeight="25.0" prefWidth="63.0" text="Start Date" AnchorPane.bottomAnchor="463.0" AnchorPane.topAnchor="82.0">
+        <ComboBox fx:id="contactNameCB" layoutX="147.0" layoutY="267.0" prefWidth="175.0" promptText="Select a Contact" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="206.0" />
+        <Label layoutX="41.0" layoutY="367.0" prefHeight="25.0" prefWidth="73.0" text="Start Date" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="367.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <DatePicker fx:id="startDateDatePicker" layoutX="233.0" layoutY="113.0" AnchorPane.topAnchor="113.0" />
-        <Label layoutX="517.0" layoutY="87.0" text="End Date" AnchorPane.leftAnchor="517.0" AnchorPane.topAnchor="87.0">
+        <DatePicker fx:id="startDatePicker" layoutX="195.0" layoutY="367.0" prefWidth="175.0" AnchorPane.topAnchor="367.0" />
+        <Label layoutX="41.0" layoutY="447.0" text="End Date" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="447.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <DatePicker fx:id="endDateDatePicker" layoutX="459.0" layoutY="113.0" AnchorPane.topAnchor="113.0" />
-        <Label layoutX="78.0" layoutY="319.0" text="Type" AnchorPane.topAnchor="319.0">
+        <DatePicker fx:id="endDatePicker" layoutX="459.0" layoutY="113.0" prefWidth="175.0" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="445.0" />
+        <Label layoutX="41.0" layoutY="247.0" text="Type" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="247.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <Label layoutX="289.0" layoutY="162.0" prefHeight="20.0" prefWidth="63.0" text="Start Time" AnchorPane.bottomAnchor="388.0" AnchorPane.topAnchor="162.0">
+        <Label layoutX="41.0" layoutY="407.0" prefHeight="21.0" prefWidth="73.0" text="Start Time" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="407.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font>
         </Label>
-        <ComboBox fx:id="startTimeCB" layoutX="246.0" layoutY="187.0" prefWidth="150.0" promptText="Select Time" AnchorPane.topAnchor="187.0" />
-        <Label layoutX="517.0" layoutY="163.0" prefHeight="20.0" prefWidth="58.0" text="End Time" AnchorPane.leftAnchor="517.0" AnchorPane.topAnchor="162.0">
+        <ComboBox fx:id="startTimeCB" layoutX="394.0" layoutY="485.0" prefWidth="175.0" promptText="Select Time" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="407.0" />
+        <Label layoutX="41.0" layoutY="487.0" prefHeight="21.0" prefWidth="64.0" text="End Time" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="487.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font>
         </Label>
-        <ComboBox fx:id="endTimeCB" layoutX="471.0" layoutY="189.0" prefWidth="150.0" promptText="Select Time" AnchorPane.topAnchor="188.0" />
-        <Label layoutX="242.0" layoutY="242.0" text="Appointment Description:" AnchorPane.topAnchor="242.0">
+        <ComboBox fx:id="endTimeCB" layoutX="471.0" layoutY="189.0" prefWidth="175.0" promptText="Select Time" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="487.0" />
+        <Label layoutX="242.0" layoutY="242.0" text="Description:" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="542.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <Label layoutX="37.0" layoutY="394.0" text="Appointment Title" AnchorPane.topAnchor="394.0">
+        <Label layoutX="43.0" layoutY="304.0" text="Title" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="287.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font>
         </Label>
-        <TextField fx:id="apptTitleTextField" layoutX="19.0" layoutY="420.0" AnchorPane.topAnchor="420.0" />
-        <Label layoutX="66.0" layoutY="469.0" text="Location" AnchorPane.topAnchor="469.0">
+        <TextField fx:id="titleTextField" layoutX="368.0" layoutY="366.0" prefWidth="175.0" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="285.0" />
+        <Label layoutX="42.0" layoutY="327.0" text="Location" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="327.0">
             <font>
-                <Font size="14.0" />
+                <Font name="Nirmala UI" size="15.0" />
             </font></Label>
-        <TextField fx:id="updateLocation" layoutX="19.0" layoutY="495.0" AnchorPane.topAnchor="495.0" />
-        <TextArea layoutX="242.0" layoutY="269.0" prefHeight="108.0" prefWidth="318.0" AnchorPane.topAnchor="269.0" />
-        <TextField fx:id="apptTypeTextField" layoutX="19.0" layoutY="345.0" AnchorPane.topAnchor="345.0" />
-        <Button fx:id="updateApptBtn" layoutX="242.0" layoutY="420.0" mnemonicParsing="false" onAction="#updateApptBtnClick" text="update" />
-        <Button fx:id="updateApptRtnMainBtn" layoutX="390.0" layoutY="420.0" mnemonicParsing="false" onAction="#cancelReturnMainClick" text="Cancel" />
+        <TextField fx:id="locationTextField" layoutX="279.0" layoutY="426.0" prefWidth="175.0" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="325.0" />
+        <TextArea fx:id="descriptionTextArea" layoutX="242.0" layoutY="269.0" prefHeight="45.0" prefWidth="318.0" AnchorPane.leftAnchor="194.0" AnchorPane.topAnchor="530.0" />
+        <TextField fx:id="typeTextField" layoutX="275.0" layoutY="313.0" prefWidth="175.0" AnchorPane.leftAnchor="196.0" AnchorPane.topAnchor="245.0" />
+        <Button fx:id="updateApptBtn" layoutX="242.0" layoutY="420.0" mnemonicParsing="false" onAction="#updateApptBtnClick" prefWidth="79.0" text="Update" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="194.0">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+        <Button fx:id="updateApptRtnMainBtn" layoutX="291.0" layoutY="593.0" mnemonicParsing="false" onAction="#cancelReturnMainClick" prefWidth="79.0" text="Cancel" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="270.0">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
     </children>
 
 </AnchorPane>

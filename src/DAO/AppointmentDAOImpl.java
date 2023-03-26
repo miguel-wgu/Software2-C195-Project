@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import model.Appointment;
+import model.Report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,16 +27,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	public ObservableList<Appointment> getAll() throws SQLException {
 		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 		String sqlStatement = "SELECT * FROM appointments";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
-		     ResultSet result = ps.executeQuery()) {
-			while (result.next()) {
-				appointments.add(addApptToList(result));
-			}
-			return appointments;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return getAppointments(appointments, sqlStatement);
 	}
 
 	/**
@@ -82,7 +74,6 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	 * Updates an appointment in the database.
 	 *
 	 * @param appointment Appointment to be updated.
-	 * @throws SQLException if the appointment already exists.
 	 */
 	@Override
 	public void update(Appointment appointment) {
@@ -109,21 +100,21 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, appointment.getAppointmentID());
 			int numRowsDeleted = ps.executeUpdate();
+			Alert alert;
 			if (numRowsDeleted == 1) {
 				// Appointment deleted alert
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Appointment Deleted");
 				alert.setHeaderText("Appointment Deleted");
 				alert.setContentText("Successfully deleted appointment with ID " + appointment.getAppointmentID());
-				alert.showAndWait();
 			} else {
 				// Appointment not deleted alert
-				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert = new Alert(Alert.AlertType.ERROR);
 				alert.setTitle("Appointment Not Deleted");
 				alert.setHeaderText("Appointment Not Deleted");
 				alert.setContentText("Failed to delete appointment with ID " + appointment.getAppointmentID());
-				alert.showAndWait();
 			}
+			alert.showAndWait();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -158,17 +149,48 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	 * @throws SQLException if the appointment already exists.
 	 */
 	private void setPrepStatementValues(PreparedStatement ps, Appointment appointment) throws SQLException {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' h:mm a");
-		LocalDateTime dateTime = LocalDateTime.parse(appointment.getStartTime(), formatter);
-		Timestamp timestamp = Timestamp.valueOf(dateTime);
+		LocalDateTime startDateTime = appointment.updateGetStartTime();
+		LocalDateTime endDateTime = appointment.updateGetEndTime();
+		Timestamp start = Timestamp.valueOf(startDateTime);
+		Timestamp end = Timestamp.valueOf(endDateTime);
 		ps.setString(1, appointment.getTitle());
 		ps.setString(2, appointment.getDescription());
 		ps.setString(3, appointment.getLocation());
 		ps.setString(4, appointment.getType());
-		ps.setTimestamp(5, timestamp);
-		ps.setTimestamp(6, timestamp);
+		ps.setTimestamp(5, start);
+		ps.setTimestamp(6, end);
 		ps.setInt(7, appointment.getCustomerID());
 		ps.setInt(8, appointment.getUserID());
 		ps.setInt(9, appointment.getContactID());
+	}
+
+		private ObservableList<Appointment> getAppointments(ObservableList<Appointment> appointments, String sqlStatement) {
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
+		     ResultSet result = ps.executeQuery()) {
+			while (result.next()) {
+				appointments.add(addApptToList(result));
+			}
+			return appointments;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// get appointment_idk, title, type, description, start date and time, end date and time, customer based on client id
+	public ObservableList<Appointment> getAppointmentByCustomerID(int customerID) {
+		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+		String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ?";
+		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			ps.setInt(1, customerID);
+			try (ResultSet result = ps.executeQuery()) {
+				while (result.next()) {
+					appointments.add(addApptToList(result));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return appointments;
 	}
 }

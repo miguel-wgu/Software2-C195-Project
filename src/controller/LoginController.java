@@ -48,7 +48,7 @@ public class LoginController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		ZoneId zoneId = ZoneId.systemDefault();
 		timezoneLabel.setText(zoneId.toString());
-		ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.FRANCE);
+		ResourceBundle rBundle = ResourceBundle.getBundle("Language", Locale.getDefault());
 		schedulerLoginLabel.setText(rBundle.getString("loginTitle"));
 		userNameTextField.setPromptText(rBundle.getString("usernameText"));
 		loginPasswordField.setPromptText(rBundle.getString("passwordText"));

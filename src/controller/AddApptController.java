@@ -65,7 +65,8 @@ public class AddApptController implements Initializable {
 		int ID = Integer.parseInt(apptIDTextField.getText());
 		String location = addLocationTextField.getText();
 		String type = typeTextField.getText();
-		int customerID = HelperFunctions.getCustomerID(customerNameCB.getValue());
+		int customerID = customerNameCB.getSelectionModel().getSelectedIndex() + 1;
+//		int customerID = HelperFunctions.getCustomerID(customerNameCB.getValue());
 		int userID = HelperFunctions.getUserID(userNameCB.getValue());
 		int contactID = HelperFunctions.getContactID(contactNameCB.getValue());
 		String title = titleTextField.getText();
@@ -77,6 +78,7 @@ public class AddApptController implements Initializable {
 		LocalDateTime endDateTime = LocalDateTime.parse(end, formatter);
 		Appointment appt = new Appointment(ID, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
 		addAppt.insert(appt);
+		System.out.println(customerNameCB.getSelectionModel().getSelectedIndex());
 		HelperFunctions.goToMain(actionEvent);
 	}
 
