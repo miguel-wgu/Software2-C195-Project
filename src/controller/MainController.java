@@ -4,10 +4,10 @@ import DAO.AppointmentDAOImpl;
 import DAO.CustomerDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -22,6 +22,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -142,6 +144,8 @@ public class MainController implements Initializable {
 	private Button updateCustomerBtn;
 	@FXML
 	private Button reportsBtn;
+	@FXML
+	private Button logOutBtn;
 
 	/**
 	 * Gets selected appointment.
@@ -223,7 +227,7 @@ public class MainController implements Initializable {
 				stage.setScene(scene);
 			}
 		} catch (NullPointerException e) {
-			ErrMsg.noApptorCustSelected("Please select an appointment to update", "No appointment selected");
+			ErrMsg.errorAlert("Please select an appointment to update", "No appointment selected");
 		}
 	}
 
@@ -244,7 +248,7 @@ public class MainController implements Initializable {
 				throw new NullPointerException();
 			}
 		} catch (NullPointerException e) {
-			ErrMsg.noApptorCustSelected("Please select an appointment to delete", "No appointment selected");
+			ErrMsg.errorAlert("Please select an appointment to delete", "No appointment selected");
 		}
 	}
 
@@ -269,16 +273,16 @@ public class MainController implements Initializable {
 				stage.setScene(scene);
 			}
 		} catch (NullPointerException e) {
-			ErrMsg.noApptorCustSelected("Please select a customer to update", "No customer selected");
+			ErrMsg.errorAlert("Please select a customer to update", "No customer selected");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void deleteCustomerBtnClick() {
-		Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+		selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 		if (selectedCustomer == null) {
-			ErrMsg.noApptorCustSelected("Please select a customer to delete", "No customer selected");
+			ErrMsg.errorAlert("Please select a customer to delete", "No customer selected");
 			return;
 		}
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -290,7 +294,6 @@ public class MainController implements Initializable {
 			try {
 				CustomerDAOImpl customerDao = new CustomerDAOImpl();
 				HelperFunctions.deleteCustomerAppointments(selectedCustomer.getCustomerID());
-//				AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
 				ObservableList<Appointment> appointmentsList;
 				appointmentsList = appointmentDAO.getAll();
 				appointmentsTable.setItems(appointmentsList);
@@ -302,7 +305,7 @@ public class MainController implements Initializable {
 				successAlert.setContentText(selectedCustomer.getCustomerName() + " has been deleted");
 				successAlert.showAndWait();
 			} catch (SQLException e) {
-				ErrMsg.noApptorCustSelected("Error deleting " + selectedCustomer.getCustomerName(), "Error");
+				ErrMsg.errorAlert("Error deleting " + selectedCustomer.getCustomerName(), "Error");
 			}
 		}
 	}
@@ -331,7 +334,7 @@ public class MainController implements Initializable {
 		appointmentsTable.setItems(appointmentDAO.getAll());
 	}
 
-	public void reportsBtnClick(ActionEvent actionEvent) {
+	public void reportsBtnClick() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ReportsScene.fxml"));
 			Stage stage = (Stage) reportsBtn.getScene().getWindow();
@@ -341,5 +344,13 @@ public class MainController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void logOutBtnClick() throws IOException {
+		Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/LoginScene.fxml")));
+		Stage stage = (Stage) logOutBtn.getScene().getWindow();
+		stage.setTitle(ResourceBundle.getBundle("Language", Locale.getDefault()).getString("title"));
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 }

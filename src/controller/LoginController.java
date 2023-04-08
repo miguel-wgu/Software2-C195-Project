@@ -1,12 +1,12 @@
 package controller;
 
+import DAO.AppointmentDAOImpl;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import model.Appointment;
 import utils.ErrMsg;
 import utils.HelperFunctions;
 
@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -35,6 +36,7 @@ public class LoginController implements Initializable {
 	 * Constant to hold the login log file path.
 	 */
 	private static final String LOGIN_FILE_PATH = "./login_log.txt";
+//	private static final String APPT_ALERT = "Appointment Alert";
 	/**
 	 * Variable to hold the username.
 	 */
@@ -86,8 +88,41 @@ public class LoginController implements Initializable {
 	}
 
 	/**
+	 * Creates/updates the login log file with the user login attempt.
+	 *
+	 * @param userName the username
+	 * @param password the password
+	 * @throws SQLException if there is an error with the database
+	 */
+	private static void logLogin(String userName, String password) throws SQLException {
+		boolean attempt = (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password));
+		try {
+			LocalDateTime local = LocalDateTime.now(ZoneOffset.UTC);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy - HH:mm:ss");
+			String formattedTime = local.format(formatter);
+			File logFile = new File(LOGIN_FILE_PATH);
+			if (!logFile.exists()) {
+				boolean wasFileCreated = logFile.getParentFile().mkdirs();
+				if (wasFileCreated) {
+					wasFileCreated = logFile.createNewFile();
+					if (!wasFileCreated)
+						throw new RuntimeException("Could not create file: " + logFile.getAbsolutePath());
+					else
+						throw new RuntimeException("Could not create directory: " + logFile.getParentFile().getAbsolutePath());
+				}
+			}
+			try (FileWriter writer = new FileWriter(logFile, true)) {
+				writer.write("User " + userName + " " + (attempt ? "successfully" : "unsuccessfully") + " logged in: " + formattedTime + " UTC\n");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Initializes the login scene with the current timezone and language.
-	 * @param url the url
+	 *
+	 * @param url            the url
 	 * @param resourceBundle the resource bundle
 	 */
 	@Override
@@ -118,6 +153,7 @@ public class LoginController implements Initializable {
 		try {
 			if (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password)) {
 				HelperFunctions.goToMain(actionEvent);
+				checkForAppointment();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,34 +169,29 @@ public class LoginController implements Initializable {
 		loginPasswordField.setText("");
 	}
 
-	/**
-	 * Creates/updates the login log file with the user login attempt.
-	 * @param userName the username
-	 * @param password the password
-	 * @throws SQLException if there is an error with the database
-	 */
-	private static void logLogin(String userName, String password) throws SQLException {
-		boolean attempt = (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password));
-		try {
-			LocalDateTime local = LocalDateTime.now(ZoneOffset.UTC);
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy - HH:mm:ss");
-			String formattedTime = local.format(formatter);
-			File logFile = new File(LOGIN_FILE_PATH);
-			if (!logFile.exists()) {
-				boolean wasFileCreated = logFile.getParentFile().mkdirs();
-				if (wasFileCreated) {
-					wasFileCreated = logFile.createNewFile();
-					if (!wasFileCreated)
-						throw new RuntimeException("Could not create file: " + logFile.getAbsolutePath());
-					else
-						throw new RuntimeException("Could not create directory: " + logFile.getParentFile().getAbsolutePath());
-				}
+	// Once the user is validated, display an alert if there is an appointment within 15 minutes of the user's login.
+	private void checkForAppointment() throws SQLException {
+		AppointmentDAOImpl AppointmentDAO = new AppointmentDAOImpl();
+		ObservableList<Appointment> appointments = AppointmentDAO.getAll();
+		boolean upcomingAppointment = false;
+		ZoneId userTimeZone = ZoneId.systemDefault();
+		for (Appointment appointment : appointments) {
+			ZonedDateTime start = appointment.updateGetStartTime().atZone(userTimeZone);
+			if (start.isBefore(ZonedDateTime.now().plusMinutes(15)) && start.isAfter(ZonedDateTime.now())) {
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Appointment Alert");
+				alert.setHeaderText("You have an appointment within 15 minutes.");
+				alert.setContentText("Appointment ID: " + appointment.getAppointmentID() + "\nDate: " + appointment.updateGetStartTime().toLocalDate() + "\nTime: " + appointment.updateGetStartTime().toLocalTime());
+				alert.showAndWait();
+				upcomingAppointment = true;
 			}
-			try (FileWriter writer = new FileWriter(logFile, true)) {
-				writer.write("User " + userName + " " + (attempt ? "successfully" : "unsuccessfully") + " logged in: " + formattedTime + " UTC\n");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (!upcomingAppointment) {
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Appointment Alert");
+			alert.setHeaderText("Appointment Alert");
+			alert.setContentText("You have no upcoming appointments.");
+			alert.showAndWait();
 		}
 	}
 }

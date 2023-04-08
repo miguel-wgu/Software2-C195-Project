@@ -3,65 +3,81 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<AnchorPane prefHeight="450.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateCustomerController">
+<AnchorPane prefHeight="450.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateCustomerController">
     <children>
-        <Label layoutX="213.0" layoutY="29.0" text="Update Customer" AnchorPane.leftAnchor="213.0" AnchorPane.topAnchor="35.0">
+        <Label layoutX="213.0" layoutY="29.0" text="Update Customer" AnchorPane.leftAnchor="213.0"
+               AnchorPane.topAnchor="35.0">
             <font>
-                <Font name="Nirmala UI" size="24.0" />
+                <Font name="Nirmala UI" size="24.0"/>
             </font>
         </Label>
-        <Label layoutX="41.0" layoutY="91.0" text="Customer ID" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="87.0">
+        <Label layoutX="41.0" layoutY="91.0" text="Customer ID" AnchorPane.leftAnchor="41.0"
+               AnchorPane.topAnchor="87.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <TextField fx:id="customerIDTextField" disable="true" editable="false" layoutX="202.0" layoutY="85.0" prefWidth="175.0" AnchorPane.bottomAnchor="340.0" AnchorPane.rightAnchor="201.0" />
+        <TextField fx:id="customerIDTextField" disable="true" editable="false" layoutX="202.0" layoutY="85.0"
+                   prefWidth="175.0" AnchorPane.bottomAnchor="340.0"/>
         <Label layoutX="41.0" layoutY="127.0" text="Name" AnchorPane.topAnchor="127.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <TextField fx:id="customerNameTextField" layoutX="202.0" layoutY="125.0" prefWidth="175.0" AnchorPane.bottomAnchor="300.0" AnchorPane.rightAnchor="201.0" />
+        <TextField fx:id="customerNameTextField" layoutX="202.0" layoutY="125.0" prefWidth="175.0"
+                   AnchorPane.bottomAnchor="300.0"/>
         <Label layoutX="41.0" layoutY="163.0" text="Phone Number" AnchorPane.topAnchor="167.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <TextField fx:id="phoneNumberTextField" layoutX="202.0" layoutY="165.0" prefWidth="175.0" AnchorPane.bottomAnchor="260.0" AnchorPane.rightAnchor="201.0" />
+        <TextField fx:id="phoneNumberTextField" layoutX="202.0" layoutY="165.0" prefWidth="175.0"
+                   AnchorPane.bottomAnchor="260.0"/>
         <Label layoutX="41.0" layoutY="198.0" text="Address" AnchorPane.topAnchor="207.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <TextField fx:id="addressTextField" layoutX="202.0" layoutY="205.0" prefWidth="175.0" AnchorPane.rightAnchor="201.0" />
+        <TextField fx:id="addressTextField" layoutX="202.0" layoutY="205.0" prefWidth="175.0"/>
         <Label layoutX="41.0" layoutY="239.0" text="Country" AnchorPane.topAnchor="247.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <ComboBox fx:id="countryCB" layoutX="202.0" layoutY="245.0" onAction="#updateCountryCBSelect" prefWidth="175.0" AnchorPane.rightAnchor="201.0" />
+        <ComboBox fx:id="countryCB" layoutX="202.0" layoutY="245.0" onAction="#updateCountryCBSelect"
+                  prefWidth="175.0"/>
         <Label layoutX="41.0" layoutY="296.0" text="Province/State" AnchorPane.topAnchor="287.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <ComboBox fx:id="divisionCB" layoutX="202.0" layoutY="285.0" prefWidth="175.0" AnchorPane.rightAnchor="201.0" />
+        <ComboBox fx:id="divisionCB" layoutX="202.0" layoutY="285.0" prefWidth="175.0"/>
         <Label layoutX="41.0" layoutY="365.0" text="Postal Code" AnchorPane.topAnchor="327.0">
             <font>
-                <Font name="Nirmala UI" size="15.0" />
+                <Font name="Nirmala UI" size="15.0"/>
             </font>
         </Label>
-        <TextField fx:id="postalCodeTextField" layoutX="202.0" layoutY="325.0" prefWidth="175.0" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="201.0" />
-        <Button fx:id="updateBtn" layoutX="202.0" layoutY="368.0" mnemonicParsing="false" onAction="#updateBtnClick" prefHeight="25.0" prefWidth="79.0" text="Update" AnchorPane.bottomAnchor="55.0">
+        <TextField fx:id="postalCodeTextField" layoutX="202.0" layoutY="325.0" prefWidth="175.0"
+                   AnchorPane.bottomAnchor="100.0"/>
+        <Button fx:id="updateBtn" layoutX="202.0" layoutY="368.0" mnemonicParsing="false" onAction="#updateBtnClick"
+                prefHeight="25.0" prefWidth="79.0" text="Update" AnchorPane.bottomAnchor="55.0">
             <font>
-                <Font name="Nirmala UI" size="13.0" />
+                <Font name="Nirmala UI" size="13.0"/>
             </font>
         </Button>
-        <Button fx:id="cancelBtn" layoutX="298.0" layoutY="368.0" mnemonicParsing="false" onAction="#cancelBtnClick" prefHeight="25.0" prefWidth="79.0" text="Cancel" AnchorPane.bottomAnchor="55.0">
+        <Button fx:id="cancelBtn" layoutX="298.0" layoutY="368.0" mnemonicParsing="false" onAction="#cancelBtnClick"
+                prefHeight="25.0" prefWidth="79.0" text="Cancel" AnchorPane.bottomAnchor="55.0">
             <font>
-                <Font name="Nirmala UI" size="13.0" />
+                <Font name="Nirmala UI" size="13.0"/>
             </font>
         </Button>
+        <Label fx:id="customerErrLabel" alignment="TOP_LEFT" layoutX="398.0" layoutY="87.0" prefHeight="261.0"
+               prefWidth="191.0"
+               textFill="RED" AnchorPane.rightAnchor="41.0">
+            <font>
+                <Font name="Nirmala UI" size="15.0"/>
+            </font>
+        </Label>
     </children>
 </AnchorPane>

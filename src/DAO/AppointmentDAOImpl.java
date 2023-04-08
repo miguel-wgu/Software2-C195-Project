@@ -2,16 +2,13 @@ package DAO;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import model.Appointment;
-import model.Report;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * The type Appointment dao.
@@ -76,7 +73,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	 * @param appointment Appointment to be updated.
 	 */
 	@Override
-	public void update(Appointment appointment) {
+	public void update(Appointment appointment) throws SQLException{
 		// Update selected appointment
 		String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
@@ -99,22 +96,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 		String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, appointment.getAppointmentID());
-			int numRowsDeleted = ps.executeUpdate();
-			Alert alert;
-			if (numRowsDeleted == 1) {
-				// Appointment deleted alert
-				alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle("Appointment Deleted");
-				alert.setHeaderText("Appointment Deleted");
-				alert.setContentText("Successfully deleted appointment with ID " + appointment.getAppointmentID());
-			} else {
-				// Appointment not deleted alert
-				alert = new Alert(Alert.AlertType.ERROR);
-				alert.setTitle("Appointment Not Deleted");
-				alert.setHeaderText("Appointment Not Deleted");
-				alert.setContentText("Failed to delete appointment with ID " + appointment.getAppointmentID());
-			}
-			alert.showAndWait();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

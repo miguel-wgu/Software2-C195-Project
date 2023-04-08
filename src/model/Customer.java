@@ -19,16 +19,6 @@ public class Customer {
 		this.divisionName = divisionName;
 	}
 
-	public Customer(String customerName, int divisionID, String divisionName) {
-		this.customerID = 0;
-		this.customerName = customerName;
-		this.address = "";
-		this.postalCode = "";
-		this.phone = "";
-		this.divisionID = divisionID;
-		this.divisionName = divisionName;
-	}
-
 	public int getCustomerID() {
 		return customerID;
 	}

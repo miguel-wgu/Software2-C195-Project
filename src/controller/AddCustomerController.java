@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Customer;
 import utils.HelperFunctions;
@@ -65,6 +66,8 @@ public class AddCustomerController implements Initializable {
 	 */
 	@FXML
 	private Button cancelBtn; // TODO: Delete if not needed
+	@FXML
+	private Label customerErrLabel;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,13 +85,17 @@ public class AddCustomerController implements Initializable {
 	 * @param actionEvent the action event
 	 */
 	public void saveBtnClick(ActionEvent actionEvent) throws SQLException, IOException {
-		CustomerDAOImpl addCustomer = new CustomerDAOImpl();
-		int customerID = HelperFunctions.getNextCustomerID();
+		try {
+			CustomerDAOImpl addCustomer = new CustomerDAOImpl();
+			int customerID = HelperFunctions.getNextCustomerID();
 //		int divisionID = Integer.parseInt(customerIDTextField.getText());
-		int divisionID = HelperFunctions.getDivisionID(divisionCB.getValue());
-		Customer customer = new Customer(customerID, customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(), phoneNumberTextField.getText(), divisionID, divisionCB.getValue());
-		addCustomer.insert(customer);
-		HelperFunctions.goToMain(actionEvent);
+			int divisionID = HelperFunctions.getDivisionID(divisionCB.getValue());
+			Customer customer = new Customer(customerID, customerNameTextField.getText(), addressTextField.getText(), postalCodeTextField.getText(), phoneNumberTextField.getText(), divisionID, divisionCB.getValue());
+			addCustomer.insert(customer);
+			HelperFunctions.goToMain(actionEvent);
+		} catch (SQLException e) {
+			customerErr();
+		}
 	}
 
 	/**
@@ -104,5 +111,28 @@ public class AddCustomerController implements Initializable {
 	public void countryCBSelect() {
 		int countryID = HelperFunctions.getCountryID(countryCB.getValue());
 		divisionCB.setItems(HelperFunctions.getDivisions(countryID));
+		divisionCB.setValue(null);
+	}
+
+	private void customerErr() {
+		customerErrLabel.setText("");
+		if (customerNameTextField.getText().isEmpty()) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please enter a name\n");
+		}
+		if (phoneNumberTextField.getText().isEmpty()) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please enter a number\n");
+		}
+		if (addressTextField.getText().isEmpty()) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please enter an address\n");
+		}
+		if (countryCB.getValue() ==  null) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please select a country\n");
+		}
+		if (divisionCB.getValue() == null) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please select a division\n");
+		}
+		if (postalCodeTextField.getText().isEmpty()) {
+			customerErrLabel.setText(customerErrLabel.getText() + "Please enter a postal code");
+		}
 	}
 }

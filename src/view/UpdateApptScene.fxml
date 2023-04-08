@@ -83,6 +83,10 @@
          <font>
             <Font name="Nirmala UI" size="13.0" />
          </font></Button>
+        <Label fx:id="apptErrLabel" alignment="TOP_LEFT" prefHeight="261.0" prefWidth="191.0" textFill="RED" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="125.0">
+            <font>
+                <Font name="Nirmala UI" size="15.0" />
+            </font></Label>
     </children>
 
 </AnchorPane>

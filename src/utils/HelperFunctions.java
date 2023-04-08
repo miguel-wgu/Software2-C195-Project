@@ -17,8 +17,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
+/**
+ * Helper functions for the application.
+ * <br><br>
+ * Includes a few lambda functions.
+ * <br><br>
+ * @author Miguel Guzman
+ */
 public class HelperFunctions {
 	public static void goToMain(ActionEvent actionEvent) throws IOException {
 		FXMLLoader loader = new FXMLLoader(HelperFunctions.class.getResource("/view/MainScene.fxml"));
@@ -104,6 +113,18 @@ public class HelperFunctions {
 		return customerID;
 	}
 
+	/**
+	 * Retrieves a list of usernames using a lambda expression
+	 * <p>
+	 * LAMBDA #3
+	 * <p>
+	 * After retrieving a list of users from the database, it transforms the list into a list of usernames using the map()
+	 * operation and then collecting the strings into a new ObservableList using the collect() operation.
+	 * <br>
+	 * It reduced the amount of code down from 13 lines to 11 and improved readability.
+	 *
+	 * @return ObservableList of usernames
+	 */
 	public static ObservableList<String> getUserNames() {
 		UserDAOImpl userDAO = new UserDAOImpl();
 		ObservableList<User> userList = FXCollections.observableArrayList();
@@ -112,12 +133,11 @@ public class HelperFunctions {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		ObservableList<String> userNames = FXCollections.observableArrayList();
-		for (User u : userList) {
-			userNames.add(u.getUserName());
-		}
-		return userNames;
+		return userList.stream()
+				.map(User::getUserName)
+				.collect(FXCollections::observableArrayList, ObservableList::add, ObservableList::addAll);
 	}
+
 
 	// Get user ID from username
 	public static int getUserID(String userName) {
@@ -239,8 +259,13 @@ public class HelperFunctions {
 		ObservableList<LocalTime> businessHours = FXCollections.observableArrayList();
 		LocalTime start = LocalTime.of(8, 0);
 		LocalTime end = LocalTime.of(22, 0);
+		ZoneId EST = ZoneId.of("America/New_York");
+		LocalDate today = LocalDate.now();
 		while (start.isBefore(end)) {
-			businessHours.add(start);
+			LocalDateTime ldt = LocalDateTime.of(today, start);
+			ZonedDateTime zdt = ZonedDateTime.of(ldt, EST);
+			businessHours.add(zdt.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime());
+//			businessHours.add(start);
 			start = start.plusMinutes(15);
 		}
 		return businessHours;
@@ -269,7 +294,6 @@ public class HelperFunctions {
 	// Get customer's country name
 	public static String getCountry(int customerID) {
 		String countryName = "";
-//		String sqlStatement = "SELECT Country FROM countries WHERE Country_ID = (SELECT Country_ID FROM customers WHERE Customer_ID = ?)";
 		String sqlStatement = "SELECT Country FROM countries WHERE Country_ID = (SELECT Country_ID FROM first_level_divisions WHERE Division_ID = (SELECT Division_ID FROM customers WHERE Customer_ID = ?))";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, customerID);
@@ -301,15 +325,27 @@ public class HelperFunctions {
 		return userName;
 	}
 
+	/**
+	 * Retrieves a list of usernames by their Customer ID using a lambda expression
+	 * <p>
+	 * LAMBDA #4
+	 * <p>
+	 * This method uses a lambda function to retrieve the name of a customer from the database.<br>
+	 * It uses try-with-resources to automatically close the connection and statement and uses the Optional class to
+	 * handle the possibility of a null value being returned from the database.<br>
+	 * Because database resources are properly closed after use, the risk of resource leaks is reduced, and it improves
+	 * readability.
+	 * @param customerID Customer ID
+	 * @return Customer name
+	 */
 	public static String getCustomerName(int customerID) {
 		String customerName = "";
 		String sqlStatement = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
 			ps.setInt(1, customerID);
 			try (ResultSet result = ps.executeQuery()) {
-				if (result.next()) {
-					customerName = result.getString("Customer_Name");
-				}
+				customerName = Optional.ofNullable(result.next() ? result.getString("Customer_Name") : null)
+						.orElse("");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -317,5 +353,8 @@ public class HelperFunctions {
 		return customerName;
 	}
 
-
+	public static LocalDateTime startEndFormatter(String time) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		return LocalDateTime.parse(time, formatter);
+	}
 }

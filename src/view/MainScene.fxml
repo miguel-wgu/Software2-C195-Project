@@ -6,9 +6,9 @@
 
 <!--create a table view that displays all appointments in the database-->
 
-<AnchorPane prefHeight="824.0" prefWidth="1355.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane prefHeight="782.0" prefWidth="1225.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
     <children>
-        <TableView fx:id="appointmentsTable" layoutX="14.0" layoutY="149.0" prefHeight="250.0" prefWidth="1197.0">
+        <TableView fx:id="appointmentsTable" layoutX="14.0" layoutY="149.0" prefHeight="250.0" prefWidth="1197.0" AnchorPane.leftAnchor="14.0">
             <columns>
                 <TableColumn fx:id="appointmentIDColumn" prefWidth="60.0" text="Appt ID" />
                 <TableColumn fx:id="titleColumn" minWidth="4.0" prefWidth="123.0" text="Title" />
@@ -22,10 +22,19 @@
                 <TableColumn fx:id="userIDColumn" prefWidth="58.0" text="User ID" />
             </columns>
         </TableView>
-        <Button fx:id="addApptBtn" layoutX="1245.0" layoutY="195.0" mnemonicParsing="false" onAction="#addApptBtnClick" text="Add Appt." />
-        <Button fx:id="updateApptBtn" layoutX="1237.0" layoutY="264.0" mnemonicParsing="false" onAction="#updateApptBtn" text="Update Appt." />
-        <Button fx:id="deleteApptBtn" layoutX="1239.0" layoutY="329.0" mnemonicParsing="false" onAction="#deleteApptBtn" text="Delete Appt." />
-        <TableView fx:id="customersTable" layoutX="14.0" layoutY="504.0" prefHeight="250.0" prefWidth="708.0" AnchorPane.bottomAnchor="70.0">
+        <Button fx:id="addApptBtn" layoutX="833.0" layoutY="429.0" mnemonicParsing="false" onAction="#addApptBtnClick" text="Add Appt.">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+        <Button fx:id="updateApptBtn" layoutX="928.0" layoutY="429.0" mnemonicParsing="false" onAction="#updateApptBtn" text="Update Appt.">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+        <Button fx:id="deleteApptBtn" layoutX="1040.0" layoutY="429.0" mnemonicParsing="false" onAction="#deleteApptBtn" text="Delete Appt.">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+        <TableView fx:id="customersTable" layoutX="14.0" layoutY="475.0" prefHeight="250.0" prefWidth="708.0">
             <columns>
                 <TableColumn fx:id="customerIDColumn2" text="Customer ID" />
                 <TableColumn fx:id="customerNameColumn" prefWidth="128.0" text="Name" />
@@ -35,9 +44,18 @@
                 <TableColumn fx:id="postalCodeColumn" prefWidth="100.0" text="Postal Code" />
             </columns>
         </TableView>
-      <Button fx:id="addCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="722.0" layoutY="549.0" mnemonicParsing="false" onAction="#addCustomerBtnClick" text="Add Customer" />
-      <Button fx:id="updateCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="722.0" layoutY="617.0" mnemonicParsing="false" onAction="#updateCustomerBtnClick" text="Update Customer" />
-      <Button fx:id="deleteCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="722.0" layoutY="679.0" mnemonicParsing="false" onAction="#deleteCustomerBtnClick" text="Delete Customer" />
+      <Button fx:id="addCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="803.0" layoutY="659.0" mnemonicParsing="false" onAction="#addCustomerBtnClick" text="Add Customer">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+      <Button fx:id="updateCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="917.0" layoutY="659.0" mnemonicParsing="false" onAction="#updateCustomerBtnClick" text="Update Customer">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+      <Button fx:id="deleteCustomerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="1048.0" layoutY="659.0" mnemonicParsing="false" onAction="#deleteCustomerBtnClick" text="Delete Customer">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
       <Label layoutX="521.0" layoutY="24.0" text="Appointment Scheduler">
          <font>
             <Font name="Nirmala UI" size="30.0" />
@@ -48,7 +66,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="16.0" layoutY="458.0" text="Customers">
+      <Label layoutX="16.0" layoutY="429.0" text="Customers">
          <font>
             <Font size="24.0" />
          </font>
@@ -76,7 +94,14 @@
             <Font name="Nirmala UI" size="16.0" />
          </font>
       </RadioButton>
-      <Button fx:id="reportsBtn" layoutX="887.0" layoutY="446.0" mnemonicParsing="false" onAction="#reportsBtnClick" text="View Reports" />
+      <Button fx:id="reportsBtn" layoutX="929.0" layoutY="521.0" mnemonicParsing="false" onAction="#reportsBtnClick" text="View Reports">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
+      <Button fx:id="logOutBtn" layoutX="943.0" layoutY="566.0" mnemonicParsing="false" onAction="#logOutBtnClick" text="Log Out">
+         <font>
+            <Font name="Nirmala UI" size="13.0" />
+         </font></Button>
     </children>
 
 </AnchorPane>
