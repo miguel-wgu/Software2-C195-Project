@@ -4,16 +4,42 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
+ * The Java Database Connectivity class.
+ *
  * @author Miguel Guzman
  */
 public abstract class JDBC {
+	/**
+	 * The constant protocol.
+	 */
 	private static final String protocol = "jdbc";
+	/**
+	 * The constant vendor.
+	 */
 	private static final String vendor = ":mysql:";
+	/**
+	 * The constant location.
+	 */
 	private static final String location = "//localhost/";
+	/**
+	 * The constant databaseName.
+	 */
 	private static final String databaseName = "client_schedule";
+	/**
+	 * The constant jdbcUrl.
+	 */
 	private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
+	/**
+	 * The constant driver.
+	 */
 	private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
+	/**
+	 * The constant userName.
+	 */
 	private static final String userName = "sqlUser"; // Username
+	/**
+	 * The constant password.
+	 */
 	private static final String password = "Passw0rd!"; // Password
 	/**
 	 * The constant connection.

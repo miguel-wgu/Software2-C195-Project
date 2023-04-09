@@ -3,18 +3,65 @@ package model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The Appointment class.
+ */
 public class Appointment {
+	/**
+	 * The Customer ID.
+	 */
 	private int customerID;
+	/**
+	 * The User ID.
+	 */
 	private int userID;
+	/**
+	 * The Contact ID.
+	 */
 	private int contactID;
+	/**
+	 * The Appointment ID.
+	 */
 	private int appointmentID;
+	/**
+	 * The Title.
+	 */
 	private String title;
+	/**
+	 * The Description.
+	 */
 	private String description;
+	/**
+	 * The Location.
+	 */
 	private String location;
+	/**
+	 * The Type.
+	 */
 	private String type;
+	/**
+	 * The Start time.
+	 */
 	private LocalDateTime startTime;
+	/**
+	 * The End time.
+	 */
 	private LocalDateTime endTime;
 
+	/**
+	 * Instantiates a new Appointment.
+	 *
+	 * @param appointmentID the appointment id
+	 * @param title         the title
+	 * @param description   the description
+	 * @param location      the location
+	 * @param type          the type
+	 * @param startTime     the start
+	 * @param endTime       the end
+	 * @param customerID    the customer id
+	 * @param userID        the user id
+	 * @param contactID     the contact id
+	 */
 	public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime, int customerID, int userID, int contactID) {
 		this.appointmentID = appointmentID;
 		this.title = title;
@@ -28,7 +75,18 @@ public class Appointment {
 		this.contactID = contactID;
 	}
 
-	public Appointment(int appointmentID, String title, String description, String type, LocalDateTime start, LocalDateTime end, int customerId){
+	/**
+	 * Instantiates a new Appointment and is used for Reporting purposes.
+	 *
+	 * @param appointmentID the appointment id
+	 * @param title         the title
+	 * @param description   the description
+	 * @param type          the type
+	 * @param start         the start
+	 * @param end           the end
+	 * @param customerId    the customer id
+	 */
+	public Appointment(int appointmentID, String title, String description, String type, LocalDateTime start, LocalDateTime end, int customerId) {
 		this.appointmentID = appointmentID;
 		this.title = title;
 		this.description = description;
@@ -130,7 +188,7 @@ public class Appointment {
 	}
 
 	/**
-	 * Gets start time.
+	 * Returns a formatted string of the start time and date.
 	 *
 	 * @return the start time
 	 */
@@ -140,25 +198,27 @@ public class Appointment {
 		return dateTime.format(formatter);
 	}
 
-//	public LocalDateTime getStartTime() {
-//		return this.startTime;
-//	}
-
-//	/**
-//	 * Sets start time.
-//	 *
-//	 * @param startTime the start time
-//	 */
-	public LocalDateTime updateGetStartTime() {
-		return this.startTime;
-	}
-
+	/**
+	 * Sets start time.
+	 *
+	 * @param startTime the start time
+	 */
 	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 
+
 	/**
-	 * Gets end time.
+	 * Returns the start time
+	 *
+	 * @return the start time
+	 */
+	public LocalDateTime updateGetStartTime() {
+		return this.startTime;
+	}
+
+	/**
+	 * Returns a formatted string of the end time and date.
 	 *
 	 * @return the end time
 	 */
@@ -168,10 +228,6 @@ public class Appointment {
 		return dateTime.format(formatter);
 	}
 
-	public LocalDateTime updateGetEndTime() {
-		return this.endTime;
-	}
-
 	/**
 	 * Sets end time.
 	 *
@@ -179,6 +235,15 @@ public class Appointment {
 	 */
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
+	}
+
+	/**
+	 * Returns the end time
+	 *
+	 * @return the end time
+	 */
+	public LocalDateTime updateGetEndTime() {
+		return this.endTime;
 	}
 
 	/**

@@ -1,16 +1,10 @@
 package utils;
-import DAO.UserValidation;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import model.User;
 
-import java.io.IOException;
+import DAO.UserValidation;
+import javafx.scene.control.Alert;
+
 import java.sql.SQLException;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -92,38 +86,4 @@ public class ErrMsg {
 		err.setHeaderText(message);
 		err.showAndWait();
 	}
-
-	// Display an error message when adding an appointment in a text area if:
-	// 1. No user is selected
-	// 2. No customer is selected
-	// 3. No contact is selected
-	// 4. No type isn't is entered
-	// 5. No title is entered
-	// 6. No start date is selected
-	// 7. No start time is selected
-	// 8. No end date is selected
-	// 9. No end time is selected
-	// 10. No description is entered
-
-	/**
-	 * Checks if the appointment is valid
-	 * <p>
-	 * //	 * @param customerID the customer id
-	 * //	 * @param userID     the user id
-	 * //	 * @param title      the title
-	 * //	 * @param description the description
-	 * //	 * @param location   the location
-	 * //	 * @param contact    the contact
-	 * //	 * @param type       the type
-	 * //	 * @param url        the url
-	 * //	 * @param start      the start
-	 * //	 * @param end        the end
-	 * //	 * @return the boolean
-	 * //
-	 */
-//	public static void addApptErr(String userName, Label errLabel) throws IOException {
-//		if (userName.isEmpty()) {
-//			errLabel.setText("Please select a user");
-//		}
-//	}
 }

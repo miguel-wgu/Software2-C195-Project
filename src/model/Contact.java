@@ -1,8 +1,20 @@
 package model;
 
+/**
+ * The Contact class.
+ */
 public class Contact {
+	/**
+	 * The Contact ID.
+	 */
 	private int contactID;
+	/**
+	 * The Contact name.
+	 */
 	private String name;
+	/**
+	 * The Contact email.
+	 */
 	private String email;
 
 	/**

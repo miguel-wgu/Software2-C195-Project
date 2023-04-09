@@ -24,11 +24,10 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for LoginScene.fxml
- *
- * @author Miguel Guzman
- *
  * <br><br>
  * This controller is responsible for validating the user login credentials.
+ *
+ * @author Miguel Guzman
  */
 public class LoginController implements Initializable {
 
@@ -36,7 +35,10 @@ public class LoginController implements Initializable {
 	 * Constant to hold the login log file path.
 	 */
 	private static final String LOGIN_FILE_PATH = "./login_log.txt";
-//	private static final String APPT_ALERT = "Appointment Alert";
+	/**
+	 * Constant to hold the appointment alert title.
+	 */
+	private static final String APPT_ALERT = "Appointment Alert";
 	/**
 	 * Variable to hold the username.
 	 */
@@ -122,7 +124,7 @@ public class LoginController implements Initializable {
 	/**
 	 * Initializes the login scene with the current timezone and language.
 	 *
-	 * @param url            the url
+	 * @param url            The URL
 	 * @param resourceBundle the resource bundle
 	 */
 	@Override
@@ -148,8 +150,6 @@ public class LoginController implements Initializable {
 		userName = userNameTextField.getText();
 		String password = loginPasswordField.getText();
 		logLogin(userName, password);
-
-		// check for empty string, if false start MainScene
 		try {
 			if (!ErrMsg.isEmptyField(userName, password) && !ErrMsg.isIncorrect(userName, password)) {
 				HelperFunctions.goToMain(actionEvent);
@@ -169,7 +169,11 @@ public class LoginController implements Initializable {
 		loginPasswordField.setText("");
 	}
 
-	// Once the user is validated, display an alert if there is an appointment within 15 minutes of the user's login.
+	/**
+	 * Checks for an appointment within 15 minutes of the current time.
+	 *
+	 * @throws SQLException if there is an error with the database
+	 */
 	private void checkForAppointment() throws SQLException {
 		AppointmentDAOImpl AppointmentDAO = new AppointmentDAOImpl();
 		ObservableList<Appointment> appointments = AppointmentDAO.getAll();
@@ -179,17 +183,17 @@ public class LoginController implements Initializable {
 			ZonedDateTime start = appointment.updateGetStartTime().atZone(userTimeZone);
 			if (start.isBefore(ZonedDateTime.now().plusMinutes(15)) && start.isAfter(ZonedDateTime.now())) {
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle("Appointment Alert");
+				alert.setTitle(APPT_ALERT);
 				alert.setHeaderText("You have an appointment within 15 minutes.");
 				alert.setContentText("Appointment ID: " + appointment.getAppointmentID() + "\nDate: " + appointment.updateGetStartTime().toLocalDate() + "\nTime: " + appointment.updateGetStartTime().toLocalTime());
 				alert.showAndWait();
 				upcomingAppointment = true;
 			}
-			}
-			if (!upcomingAppointment) {
+		}
+		if (!upcomingAppointment) {
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Appointment Alert");
-			alert.setHeaderText("Appointment Alert");
+			alert.setTitle(APPT_ALERT);
+			alert.setHeaderText(APPT_ALERT);
 			alert.setContentText("You have no upcoming appointments.");
 			alert.showAndWait();
 		}

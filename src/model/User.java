@@ -6,8 +6,17 @@ package model;
  * @author Miguel Guzman
  */
 public class User {
+	/**
+	 * The User ID.
+	 */
 	private int userID;
+	/**
+	 * The Username.
+	 */
 	private String userName;
+	/**
+	 * The Password.
+	 */
 	private String password;
 
 	/**

@@ -1,9 +1,14 @@
 package utils;
 
+import DAO.JDBC;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import model.Appointment;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -20,19 +25,20 @@ import java.time.ZonedDateTime;
 public class ApptHelperFunctions {
 	/**
 	 * Displays what fields are missing when adding or updating an appointment.
+	 * <p>
 	 *
-//	 * @param apptErrLabel        The error label.
-//	 * @param userNameCB          The username combo box.
-//	 * @param customerNameCB      The customer name combo box.
-//	 * @param contactNameCB       The contact name combo box.
-//	 * @param typeTextField       The type text field.
-//	 * @param titleTextField      The title text field.
-//	 * @param locationTextField   The location text field.
-//	 * @param startDatePicker     The start date picker.
-//	 * @param startTimeCB         The start time combo box.
-//	 * @param endDatePicker       The end date picker.
-//	 * @param endTimeCB           The end time combo box.
-//	 * @param descriptionTextArea The description text area.
+	 * @param apptErrLabel        The error label.
+	 * @param userNameCB          The username combo box.
+	 * @param customerNameCB      The customer name combo box.
+	 * @param contactNameCB       The contact name combo box.
+	 * @param typeTextField       The type text field.
+	 * @param titleTextField      The title text field.
+	 * @param locationTextField   The location text field.
+	 * @param startDatePicker     The start date picker.
+	 * @param startTimeCB         The start time combo box.
+	 * @param endDatePicker       The end date picker.
+	 * @param endTimeCB           The end time combo box.
+	 * @param descriptionTextArea The description text area.
 	 */
 	public static void apptErr(Label apptErrLabel,
 	                           ComboBox<String> userNameCB,
@@ -82,6 +88,15 @@ public class ApptHelperFunctions {
 		}
 	}
 
+	/**
+	 * Checks if the appointment times are within business hours.
+	 *
+	 * @param startTimeCB     The start time combo box.
+	 * @param endTimeCB       The end time combo box.
+	 * @param startDatePicker The start date picker.
+	 * @param endDatePicker   The end date picker.
+	 * @return True if the appointment times are within business hours.
+	 */
 	public static boolean validEST(ComboBox<LocalTime> startTimeCB, ComboBox<LocalTime> endTimeCB, DatePicker startDatePicker, DatePicker endDatePicker) {
 		ZoneId userZone = ZoneId.systemDefault();
 		ZoneId EST = ZoneId.of("America/New_York");
@@ -98,6 +113,15 @@ public class ApptHelperFunctions {
 		return true;
 	}
 
+	/**
+	 * Checks if the dates or times are being scheduled in the past or if end time/date is before start time/date.
+	 *
+	 * @param startDatePicker The start date picker.
+	 * @param startTimeCB     The start time combo box.
+	 * @param endDatePicker   The end date picker.
+	 * @param endTimeCB       The end time combo box.
+	 * @return True if the dates or times do not overlap with another appointment.
+	 */
 	public static boolean validDateTime(DatePicker startDatePicker, ComboBox<LocalTime> startTimeCB, DatePicker endDatePicker, ComboBox<LocalTime> endTimeCB) {
 		LocalDateTime startDateTime = HelperFunctions.startEndFormatter(startDatePicker.getValue().toString() + " " + startTimeCB.getValue().toString());
 		LocalDateTime endDateTime = HelperFunctions.startEndFormatter(endDatePicker.getValue().toString() + " " + endTimeCB.getValue().toString());
@@ -121,6 +145,17 @@ public class ApptHelperFunctions {
 		return true;
 	}
 
+	/**
+	 * Checks if the appointment times overlap with another appointment when adding.
+	 *
+	 * @param appointments    The list of appointments.
+	 * @param customerIndex   The customer index is the customer ID.
+	 * @param startDatePicker The start date picker.
+	 * @param startTimeCB     The start time combo box.
+	 * @param endDatePicker   The end date picker.
+	 * @param endTimeCB       The end time combo box.
+	 * @return True if the appointment times do not overlap with another appointment.
+	 */
 	public static boolean doAddApptOverlap(ObservableList<Appointment> appointments, int customerIndex, DatePicker startDatePicker, ComboBox<LocalTime> startTimeCB, DatePicker endDatePicker, ComboBox<LocalTime> endTimeCB) {
 		boolean overlap = false;
 		for (Appointment appointment : appointments) {
@@ -146,7 +181,7 @@ public class ApptHelperFunctions {
 	/**
 	 * Checks for overlapping appointments when updating an appointment
 	 * <p>
-	 * LAMBDA #5
+	 * LAMBDA #4
 	 * <p>
 	 * This lambda function is used with the anyMatch() method in the Stream API to check if there are any
 	 * overlapping appointments when updating an appointment.<br>
@@ -186,5 +221,43 @@ public class ApptHelperFunctions {
 			}
 		}
 		return overlap;
+	}
+
+	/**
+	 * Returns the next appointment ID in order to add a new appointment to the database.
+	 *
+	 * @return The next appointment ID.
+	 * @throws SQLException If there is an error with the SQL statement.
+	 */
+	public static int getNextAppointmentID() throws SQLException {
+		int nextID;
+		String updateKey = "SET information_schema_stats_expiry = 0";
+		String sqlStatement = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'client_schedule' AND TABLE_NAME = 'appointments'";
+		try (Statement statement = JDBC.connection.createStatement(); PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
+			statement.execute(updateKey);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					nextID = result.getInt("AUTO_INCREMENT");
+					return nextID;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	/**
+	 * Creates an alert that displays the appointment ID and the appointment type.
+	 *
+	 * @param appointmentID   The appointment ID.
+	 * @param appointmentType The appointment type.
+	 */
+	public static void appointmentDeleteAlert(int appointmentID, String appointmentType) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Appointment Alert");
+		alert.setHeaderText("Appointment Alert");
+		alert.setContentText("Appointment ID: " + appointmentID + " Appointment type: " + appointmentType + " has been deleted.");
+		alert.showAndWait();
 	}
 }

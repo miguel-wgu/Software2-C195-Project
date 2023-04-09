@@ -7,8 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import model.Appointment;
-import utils.ApptHelperFunctions;
-import utils.HelperFunctions;
+import utils.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +27,7 @@ import java.util.function.Supplier;
  */
 public class AddApptController implements Initializable {
 	/**
-	 * Appointment dao.
+	 * Appointment DAO.
 	 */
 	AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
 	/**
@@ -92,12 +91,6 @@ public class AddApptController implements Initializable {
 	@FXML
 	private TextArea descriptionTextArea;
 	/**
-	 * The missing field label.
-	 */
-	@FXML
-	private Label apptErrLabel;
-	private final Control[] fields = {userNameCB, customerNameCB, contactNameCB, typeTextField, titleTextField, locationTextField, startDatePicker, startTimeCB, endDatePicker, endTimeCB, descriptionTextArea};
-	/**
 	 * Represents a Boolean supplier lambda function that checks if certain fields are empty.
 	 * <p>
 	 * LAMBDA #2
@@ -119,16 +112,27 @@ public class AddApptController implements Initializable {
 					endDatePicker.getValue() == null ||
 					endTimeCB.getValue() == null ||
 					descriptionTextArea.getText().isEmpty();
+	/**
+	 * The error label.
+	 */
+	@FXML
+	private Label apptErrLabel;
 
+	/**
+	 * Initializes the controller class.
+	 *
+	 * @param url            The URL
+	 * @param resourceBundle The resource bundle
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		userNameCB.setItems(HelperFunctions.getUserNames());
-		customerNameCB.setItems(HelperFunctions.getCustomerNames());
-		contactNameCB.setItems(HelperFunctions.getContactNames());
+		userNameCB.setItems(UserHelperFunctions.getUserNames());
+		customerNameCB.setItems(CustomerHelperFunctions.getCustomerNames());
+		contactNameCB.setItems(ContactHelperFunctions.getContactNames());
 		startTimeCB.setItems(HelperFunctions.getBusinessHours());
 		endTimeCB.setItems(HelperFunctions.getBusinessHours());
 		try {
-			apptIDTextField.setText(String.valueOf(HelperFunctions.getNextAppointmentID()));
+			apptIDTextField.setText(String.valueOf(ApptHelperFunctions.getNextAppointmentID()));
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -142,7 +146,7 @@ public class AddApptController implements Initializable {
 	public void addOnClick(ActionEvent actionEvent) {
 		if (!emptyField.getAsBoolean()) {
 			int customerIndex = customerNameCB.getSelectionModel().getSelectedIndex() + 1;
-			ObservableList<Appointment> appointments = null;
+			ObservableList<Appointment> appointments;
 			try {
 				appointments = appointmentDAO.getAll();
 			} catch (SQLException e) {
@@ -166,41 +170,23 @@ public class AddApptController implements Initializable {
 			ApptHelperFunctions.apptErr(apptErrLabel, userNameCB, customerNameCB, contactNameCB, typeTextField, titleTextField, locationTextField, startDatePicker, startTimeCB, endDatePicker, endTimeCB, descriptionTextArea);
 	}
 
-//	/**
-//	 * Checks if any fields are empty.
-//	 *
-//	 * @return the boolean.
-//	 */
-//	private boolean emptyField() {
-//		return userNameCB.getValue() == null ||
-//				customerNameCB.getValue() == null ||
-//				contactNameCB.getValue() == null ||
-//				typeTextField.getText().isEmpty() ||
-//				titleTextField.getText().isEmpty() ||
-//				locationTextField.getText().isEmpty() ||
-//				startDatePicker.getValue() == null ||
-//				startTimeCB.getValue() == null ||
-//				endDatePicker.getValue() == null ||
-//				endTimeCB.getValue() == null ||
-//				descriptionTextArea.getText().isEmpty();
-//	}
-
 	/**
 	 * Appointment creation method.
+	 * <p>
+	 * LAMBDA #1
+	 * <p>
+	 * Using a Supplier interface means that the creation of an Appointment object is delayed until the get()
+	 * method is called.
 	 *
 	 * @param custID the customer id.
 	 * @throws SQLException the sql exception.
-	 *                      <p>
-	 *                      LAMBDA #1
-	 *                      <p>
-	 *                      Using a Supplier interface means that the creation of an Appointment object is delayed until the get() method is called.
 	 */
 	public void apptCreation(int custID) throws SQLException {
 		// The Supplier interface produces a result without taking any arguments. Only has get method.
 		Supplier<Appointment> appointmentSupplier = () -> {
 			int ID = Integer.parseInt(apptIDTextField.getText());
-			int userID = HelperFunctions.getUserID(userNameCB.getValue());
-			int contactID = HelperFunctions.getContactID(contactNameCB.getValue());
+			int userID = UserHelperFunctions.getUserID(userNameCB.getValue());
+			int contactID = ContactHelperFunctions.getContactID(contactNameCB.getValue());
 			String type = typeTextField.getText();
 			String title = titleTextField.getText();
 			String location = locationTextField.getText();
@@ -216,8 +202,8 @@ public class AddApptController implements Initializable {
 	/**
 	 * Cancel on click and return to main screen.
 	 *
-	 * @param actionEvent the action event.
-	 * @throws IOException the io exception.
+	 * @param actionEvent The action event.
+	 * @throws IOException The io exception.
 	 */
 	public void cancelOnClick(ActionEvent actionEvent) throws IOException {
 		HelperFunctions.goToMain(actionEvent);

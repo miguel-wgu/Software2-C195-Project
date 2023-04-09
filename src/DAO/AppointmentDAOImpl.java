@@ -11,7 +11,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * The type Appointment dao.
+ * The Appointment DAO.
+ * <br><br>
+ * Responsible for all database operations related to appointments.
+ *
+ * @author Miguel Guzman
  */
 public class AppointmentDAOImpl implements DAO<Appointment> {
 	/**
@@ -28,7 +32,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	}
 
 	/**
-	 * get appointment by id
+	 * Get appointment by id
 	 *
 	 * @param appointmentID the id
 	 * @return the appointment
@@ -73,7 +77,7 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 	 * @param appointment Appointment to be updated.
 	 */
 	@Override
-	public void update(Appointment appointment) throws SQLException{
+	public void update(Appointment appointment) throws SQLException {
 		// Update selected appointment
 		String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
@@ -146,7 +150,14 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 		ps.setInt(9, appointment.getContactID());
 	}
 
-		private ObservableList<Appointment> getAppointments(ObservableList<Appointment> appointments, String sqlStatement) {
+	/**
+	 * Returns all appointments in the database.
+	 *
+	 * @param appointments The list of appointments.
+	 * @param sqlStatement The SQL statement.
+	 * @return The list of appointments.
+	 */
+	private ObservableList<Appointment> getAppointments(ObservableList<Appointment> appointments, String sqlStatement) {
 		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
 		     ResultSet result = ps.executeQuery()) {
 			while (result.next()) {
@@ -157,22 +168,5 @@ public class AppointmentDAOImpl implements DAO<Appointment> {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	// get appointment_idk, title, type, description, start date and time, end date and time, customer based on client id
-	public ObservableList<Appointment> getAppointmentByCustomerID(int customerID) {
-		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-		String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ?";
-		try (PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement)) {
-			ps.setInt(1, customerID);
-			try (ResultSet result = ps.executeQuery()) {
-				while (result.next()) {
-					appointments.add(addApptToList(result));
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return appointments;
 	}
 }

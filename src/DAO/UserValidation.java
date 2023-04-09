@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type User validation.
+ * Class used to validate user login.
+ *
+ * @author Miguel Guzman
  */
 public abstract class UserValidation extends User {
 	/**

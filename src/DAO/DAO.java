@@ -49,5 +49,4 @@ public interface DAO<T> {
 	 * @param t the t
 	 */
 	void delete(T t) throws SQLException;
-
 }

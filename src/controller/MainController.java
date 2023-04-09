@@ -14,8 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
+import utils.ApptHelperFunctions;
+import utils.CustomerHelperFunctions;
 import utils.ErrMsg;
-import utils.HelperFunctions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,24 +29,39 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * The type Main controller.
+ * Controller class for MainScene.fxml.
+ * <br><br>
+ * Provides functionality for the main screen.
+ *
+ * @author Miguel Guzman
  */
 public class MainController implements Initializable {
+	// Appointment
+	/**
+	 * The selected appointment.
+	 */
 	private static Appointment selectedAppointment;
+	/**
+	 * The selected customer.
+	 */
 	private static Customer selectedCustomer;
+	/**
+	 * The Appointment DAO.
+	 */
 	private final AppointmentDAOImpl appointmentDAO = new AppointmentDAOImpl();
+	/**
+	 * The Customer DAO.
+	 */
+	private final CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+	/**
+	 * Observable list of all appointments.
+	 */
 	private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 	/**
 	 * The Appointment table.
 	 */
 	@FXML
 	private TableView<Appointment> appointmentsTable;
-	@FXML
-	private RadioButton weekRadio;
-	@FXML
-	private RadioButton monthRadio;
-	@FXML
-	private RadioButton allRadio;
 	/**
 	 * The Appointment id column.
 	 */
@@ -101,6 +117,11 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private Button addApptBtn;
+
+	// Customer
+	/**
+	 * The Update appointment button.
+	 */
 	@FXML
 	private Button updateApptBtn;
 	/**
@@ -138,12 +159,24 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private TableColumn<Customer, String> postalCodeColumn;
+	/**
+	 * The Add Customer button
+	 */
 	@FXML
 	private Button addCustomerBtn;
+	/**
+	 * The Update Customer button
+	 */
 	@FXML
 	private Button updateCustomerBtn;
+	/**
+	 * The Reports button
+	 */
 	@FXML
 	private Button reportsBtn;
+	/**
+	 * The Logout button
+	 */
 	@FXML
 	private Button logOutBtn;
 
@@ -156,10 +189,21 @@ public class MainController implements Initializable {
 		return selectedAppointment;
 	}
 
+	/**
+	 * Gets selected customer.
+	 *
+	 * @return the selected customer
+	 */
 	public static Customer getSelectedCustomer() {
 		return selectedCustomer;
 	}
 
+	/**
+	 * Initializes the controller class.
+	 *
+	 * @param url            The URL
+	 * @param resourceBundle The resource bundle
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		try {
@@ -178,11 +222,9 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		CustomerDAOImpl customers = new CustomerDAOImpl();
 		ObservableList<Customer> customersList;
 		try {
-			customersList = customers.getAll();
+			customersList = customerDAO.getAll();
 			customerIDColumn2.setCellValueFactory(new PropertyValueFactory<>("customerID"));
 			customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 			phoneNumColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -197,9 +239,9 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Add appt btn click.
+	 * Opens the add appointment scene.
 	 *
-	 * @throws IOException the io exception
+	 * @throws IOException The io exception.
 	 */
 	public void addApptBtnClick() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddApptScene.fxml"));
@@ -210,9 +252,9 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Update appt btn.
+	 * Opens the update appointment scene.
 	 *
-	 * @throws IOException the io exception
+	 * @throws IOException The io exception.
 	 */
 	public void updateApptBtn() throws IOException {
 		selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
@@ -232,7 +274,7 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Delete appt btn.
+	 * Deletes an appointment from the database.
 	 *
 	 * @throws SQLException the sql exception
 	 */
@@ -243,7 +285,7 @@ public class MainController implements Initializable {
 				Appointment appointment = appointmentsTable.getSelectionModel().getSelectedItem();
 				appointmentDao.delete(appointment);
 				appointmentsTable.getItems().remove(appointment);
-				HelperFunctions.appointmentDeleteAlert(appointment.getAppointmentID(), appointment.getType());
+				ApptHelperFunctions.appointmentDeleteAlert(appointment.getAppointmentID(), appointment.getType());
 			} else {
 				throw new NullPointerException();
 			}
@@ -252,6 +294,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Opens the add customer scene.
+	 *
+	 * @throws IOException The io exception.
+	 */
 	public void addCustomerBtnClick() throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCustomerScene.fxml"));
 		Stage stage = (Stage) addCustomerBtn.getScene().getWindow();
@@ -260,6 +307,9 @@ public class MainController implements Initializable {
 		stage.setScene(scene);
 	}
 
+	/**
+	 * Opens the update customer scene.
+	 */
 	public void updateCustomerBtnClick() {
 		selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 		try {
@@ -279,6 +329,9 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Deletes a customer from the database with all associated appointments.
+	 */
 	public void deleteCustomerBtnClick() {
 		selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 		if (selectedCustomer == null) {
@@ -292,12 +345,10 @@ public class MainController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			try {
-				CustomerDAOImpl customerDao = new CustomerDAOImpl();
-				HelperFunctions.deleteCustomerAppointments(selectedCustomer.getCustomerID());
-				ObservableList<Appointment> appointmentsList;
-				appointmentsList = appointmentDAO.getAll();
-				appointmentsTable.setItems(appointmentsList);
-				customerDao.delete(selectedCustomer);
+				CustomerHelperFunctions.deleteCustomerAppointments(selectedCustomer.getCustomerID());
+				allAppointments = appointmentDAO.getAll();
+				appointmentsTable.setItems(allAppointments);
+				customerDAO.delete(selectedCustomer);
 				customersTable.getItems().remove(selectedCustomer);
 				Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
 				successAlert.setTitle("Customer Deleted");
@@ -310,6 +361,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Displays all appointments for the current week.
+	 *
+	 * @throws SQLException The sql exception.
+	 */
 	public void weekSelect() throws SQLException {
 		appointmentDAO.getAll();
 		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
@@ -320,6 +376,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Displays all appointments for the current month.
+	 *
+	 * @throws SQLException The sql exception.
+	 */
 	public void monthSelect() throws SQLException {
 		appointmentDAO.getAll();
 		ObservableList<Appointment> appointments = FXCollections.observableArrayList();
@@ -330,10 +391,18 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Displays all appointments.
+	 *
+	 * @throws SQLException The sql exception.
+	 */
 	public void allSelect() throws SQLException {
 		appointmentsTable.setItems(appointmentDAO.getAll());
 	}
 
+	/**
+	 * Opens the Reports scene.
+	 */
 	public void reportsBtnClick() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ReportsScene.fxml"));
@@ -346,6 +415,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Logs out of the application.
+	 *
+	 * @throws IOException The io exception.
+	 */
 	public void logOutBtnClick() throws IOException {
 		Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/LoginScene.fxml")));
 		Stage stage = (Stage) logOutBtn.getScene().getWindow();

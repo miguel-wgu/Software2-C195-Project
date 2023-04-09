@@ -1,7 +1,7 @@
 package model;
 
 /**
- * The type First level division.
+ * The First level division class.
  */
 public class FirstLevelDivision {
 	/**

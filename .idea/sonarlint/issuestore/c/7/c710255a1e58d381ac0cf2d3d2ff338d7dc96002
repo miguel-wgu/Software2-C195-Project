@@ -1,18 +1,0 @@
-
-x
-java:S1104"VMake connection a static final constant or non-public and provide accessors if needed.(ÎõíŸıÿÿÿÿ8ø¥“ğ0
-R
-java:S1444"0Make this "public static connection" field final(ÎõíŸıÿÿÿÿ8ø¥“ğ0
-v	java:S115
-"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(æ¾ô¤8û¥“ğ0
-{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(™²ñ”ÿÿÿÿÿ8û¥“ğ0
-v	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ËÉŠê8û¥“ğ0
-{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(‡£«İùÿÿÿÿ8û¥“ğ0
-{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(àˆÑüÿÿÿÿ8û¥“ğ0
-v	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(üĞš8û¥“ğ0
-{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(€ÃùÚúÿÿÿÿ8û¥“ğ0
-{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ÏÇê¸ûÿÿÿÿ8û¥“ğ0
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(òÊ Ùıÿÿÿÿ8ı¥“ğ0
-U	java:S106 "9Replace this use of System.out or System.err by a logger.(äìÎÆ8ı¥“ğ0
-Z	java:S106*"9Replace this use of System.out or System.err by a logger.(åÃŒŸùÿÿÿÿ8ı¥“ğ0
-U	java:S106,"9Replace this use of System.out or System.err by a logger.(äìÎÆ8ı¥“ğ0
