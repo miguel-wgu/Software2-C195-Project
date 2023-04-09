@@ -45,7 +45,7 @@ public class HelperFunctions {
 	public static ObservableList<LocalTime> getBusinessHours() {
 		ObservableList<LocalTime> businessHours = FXCollections.observableArrayList();
 		LocalTime start = LocalTime.of(8, 0);
-		LocalTime end = LocalTime.of(22, 0);
+		LocalTime end = LocalTime.of(22, 15);
 		ZoneId EST = ZoneId.of("America/New_York");
 		LocalDate today = LocalDate.now();
 		while (start.isBefore(end)) {

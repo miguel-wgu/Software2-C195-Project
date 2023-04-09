@@ -138,7 +138,7 @@ public class ApptHelperFunctions {
 			ErrMsg.errorAlert("Please select a start date/time before the end date/time", "Invalid Date or Time");
 			return false;
 		}
-		if (startDateTime.isAfter(endDateTime)) {
+		if (startDateTime.isAfter(endDateTime) || startDateTime.equals(endDateTime)) {
 			ErrMsg.errorAlert("Please select a start date/time before the end date/time", "Invalid Date/Time");
 			return false;
 		}
